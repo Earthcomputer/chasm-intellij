@@ -1,6 +1,6 @@
-package org.jetbrains.plugins.template.services
+package com.github.earthcomputer.chasmintellij.services
 
-import org.jetbrains.plugins.template.MyBundle
+import com.github.earthcomputer.chasmintellij.MyBundle
 
 class MyApplicationService {
 
