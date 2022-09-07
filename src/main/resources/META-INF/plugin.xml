@@ -15,8 +15,12 @@
                   fieldName="INSTANCE"
                   language="Chasm"
                   extensions="chasm"/>
+        <lang.braceMatcher language="Chasm"
+                           implementationClass="net.earthcomputer.chasmintellij.ChasmPairedBraceMatcher"/>
         <lang.parserDefinition language="Chasm"
                                implementationClass="net.earthcomputer.chasmintellij.ChasmParserDefinition"/>
+        <lang.quoteHandler language="Chasm"
+                           implementationClass="net.earthcomputer.chasmintellij.ChasmQuoteHandler"/>
         <lang.refactoringSupport language="Chasm"
                                  implementationClass="net.earthcomputer.chasmintellij.ChasmRefactoringSupportProvider"/>
         <lang.syntaxHighlighterFactory language="Chasm"

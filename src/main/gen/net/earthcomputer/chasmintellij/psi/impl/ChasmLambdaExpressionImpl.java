@@ -58,9 +58,9 @@ public class ChasmLambdaExpressionImpl extends ChasmExpressionImpl implements Ch
   }
 
   @Override
-  @NotNull
+  @Nullable
   public ChasmExpression getBody() {
-    return findNotNullChildByClass(ChasmExpression.class);
+    return findChildByClass(ChasmExpression.class);
   }
 
 }

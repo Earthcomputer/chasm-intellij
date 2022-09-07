@@ -10,7 +10,7 @@ public interface ChasmMemberExpression extends ChasmExpression {
   @NotNull
   ChasmExpression getExpression();
 
-  @NotNull
+  @Nullable
   ChasmIdentifier getMemberNameElement();
 
   @NotNull

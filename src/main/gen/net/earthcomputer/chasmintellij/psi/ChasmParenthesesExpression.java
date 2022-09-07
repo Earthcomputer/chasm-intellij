@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface ChasmParenthesesExpression extends ChasmExpression {
 
-  @NotNull
+  @Nullable
   ChasmExpression getExpression();
 
 }

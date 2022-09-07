@@ -28,9 +28,9 @@ public class ChasmParenthesesExpressionImpl extends ChasmExpressionImpl implemen
   }
 
   @Override
-  @NotNull
+  @Nullable
   public ChasmExpression getExpression() {
-    return findNotNullChildByClass(ChasmExpression.class);
+    return findChildByClass(ChasmExpression.class);
   }
 
 }

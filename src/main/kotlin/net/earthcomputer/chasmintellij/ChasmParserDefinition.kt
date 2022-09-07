@@ -12,7 +12,7 @@ import net.earthcomputer.chasmintellij.psi.ChasmTypes
 
 class ChasmParserDefinition : ParserDefinition {
     companion object {
-        private val STRING_LITERALS = TokenSet.create(ChasmTypes.STRING, ChasmTypes.CHAR)
+        private val STRING_LITERALS = TokenSet.create(ChasmTypes.UNESCAPED_STRING, ChasmTypes.ESCAPED_STRING)
         val FILE = IFileElementType(ChasmLanguage)
     }
 

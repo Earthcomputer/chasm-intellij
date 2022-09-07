@@ -17,6 +17,7 @@ class ChasmColorSettingsPage : ColorSettingsPage {
             AttributesDescriptor("Identifier", ChasmSyntaxHighlighter.IDENTIFIER),
             AttributesDescriptor("Number", ChasmSyntaxHighlighter.NUMBER),
             AttributesDescriptor("String", ChasmSyntaxHighlighter.STRING),
+            AttributesDescriptor("Escaped string character", ChasmSyntaxHighlighter.ESCAPED_STRING),
             AttributesDescriptor("Keyword", ChasmSyntaxHighlighter.KEYWORD),
             AttributesDescriptor("Operator", ChasmSyntaxHighlighter.OPERATOR),
             AttributesDescriptor("Dot", ChasmSyntaxHighlighter.DOT),
@@ -47,7 +48,7 @@ class ChasmColorSettingsPage : ColorSettingsPage {
         {
             <key>identifier</key>: hello,
             <key>number</key>: 123.45,
-            <key>string</key>: "hello world",
+            <key>string</key>: "hello world \"",
             <key>keyword</key>: null,
             <key>operator</key>: 1 + 2,
             <key>dot</key>: foo.<key>bar</key>,

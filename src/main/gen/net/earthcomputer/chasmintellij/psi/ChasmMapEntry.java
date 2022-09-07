@@ -23,7 +23,7 @@ public interface ChasmMapEntry extends PsiNameIdentifierOwner {
   @NotNull
   ChasmMapEntry setName(@NotNull String name);
 
-  @NotNull
+  @Nullable
   ChasmExpression getValue();
 
 }

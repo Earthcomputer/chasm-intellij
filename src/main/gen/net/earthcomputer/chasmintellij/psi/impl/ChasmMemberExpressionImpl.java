@@ -34,9 +34,9 @@ public class ChasmMemberExpressionImpl extends ChasmExpressionImpl implements Ch
   }
 
   @Override
-  @NotNull
+  @Nullable
   public ChasmIdentifier getMemberNameElement() {
-    return findNotNullChildByClass(ChasmIdentifier.class);
+    return findChildByClass(ChasmIdentifier.class);
   }
 
   @Override

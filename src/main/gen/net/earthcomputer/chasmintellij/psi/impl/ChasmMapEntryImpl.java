@@ -58,9 +58,9 @@ public class ChasmMapEntryImpl extends ASTWrapperPsiElement implements ChasmMapE
   }
 
   @Override
-  @NotNull
+  @Nullable
   public ChasmExpression getValue() {
-    return findNotNullChildByClass(ChasmExpression.class);
+    return findChildByClass(ChasmExpression.class);
   }
 
 }

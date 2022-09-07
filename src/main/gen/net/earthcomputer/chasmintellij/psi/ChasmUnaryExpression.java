@@ -11,7 +11,7 @@ public interface ChasmUnaryExpression extends ChasmExpression {
   @NotNull
   IElementType getOperator();
 
-  @NotNull
+  @Nullable
   ChasmExpression getOperand();
 
 }

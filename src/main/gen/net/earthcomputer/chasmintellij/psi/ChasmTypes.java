@@ -39,13 +39,13 @@ public interface ChasmTypes {
   IElementType BOOL = new ChasmTokenType("BOOL");
   IElementType BOOL_AND = new ChasmTokenType("BOOL_AND");
   IElementType BOOL_OR = new ChasmTokenType("BOOL_OR");
-  IElementType CHAR = new ChasmTokenType("CHAR");
   IElementType COLON = new ChasmTokenType("COLON");
   IElementType COMMA = new ChasmTokenType("COMMA");
   IElementType DIVIDE = new ChasmTokenType("DIVIDE");
   IElementType DOLLAR = new ChasmTokenType("DOLLAR");
   IElementType DOT = new ChasmTokenType("DOT");
   IElementType EQUAL = new ChasmTokenType("EQUAL");
+  IElementType ESCAPED_STRING = new ChasmTokenType("ESCAPED_STRING");
   IElementType FLOAT = new ChasmTokenType("FLOAT");
   IElementType GREATER_THAN = new ChasmTokenType("GREATER_THAN");
   IElementType GREATER_THAN_EQUAL = new ChasmTokenType("GREATER_THAN_EQUAL");
@@ -65,15 +65,17 @@ public interface ChasmTypes {
   IElementType NOT_EQUAL = new ChasmTokenType("NOT_EQUAL");
   IElementType NULL = new ChasmTokenType("NULL");
   IElementType PLUS = new ChasmTokenType("PLUS");
+  IElementType QUOTE = new ChasmTokenType("QUOTE");
   IElementType RBRACE = new ChasmTokenType("RBRACE");
   IElementType RBRACKET = new ChasmTokenType("RBRACKET");
   IElementType RPAREN = new ChasmTokenType("RPAREN");
   IElementType SHIFT_LEFT = new ChasmTokenType("SHIFT_LEFT");
   IElementType SHIFT_RIGHT = new ChasmTokenType("SHIFT_RIGHT");
   IElementType SHIFT_RIGHT_UNSIGNED = new ChasmTokenType("SHIFT_RIGHT_UNSIGNED");
+  IElementType SINGLE_QUOTE = new ChasmTokenType("SINGLE_QUOTE");
   IElementType SKIP = new ChasmTokenType("SKIP");
-  IElementType STRING = new ChasmTokenType("STRING");
   IElementType TERNARY = new ChasmTokenType("TERNARY");
+  IElementType UNESCAPED_STRING = new ChasmTokenType("UNESCAPED_STRING");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {

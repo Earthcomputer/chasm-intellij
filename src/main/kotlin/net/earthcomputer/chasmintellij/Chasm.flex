@@ -21,8 +21,6 @@ NULL="null"
 BOOL="true" | "false"
 FLOAT=("+" | "-")? [0-9]+ "." [0-9]+ ("e" ("+" | "-")? [0-9]+)?
 INTEGER=("0x" [0-9a-fA-F]+) | ("0b" [0-1]+) | (("+" | "-")? [0-9]+)
-STRING=\"([^\\\"] | \\\\ | \\\")*\"
-CHAR='([^'] | \\')'
 
 IDENT=[_a-zA-Z] [_a-zA-Z0-9]*
 
@@ -60,6 +58,11 @@ RBRACKET="]"
 LBRACE="{"
 RBRACE="}"
 DOLLAR="$"
+QUOTE=\"
+SINGLE_QUOTE='
+
+%state WAITING_CLOSE_QUOTE
+%state WAITING_CLOSE_SINGLE_QUOTE
 
 %%
 
@@ -68,8 +71,6 @@ DOLLAR="$"
 <YYINITIAL> {BOOL} { yybegin(YYINITIAL); return ChasmTypes.BOOL; }
 <YYINITIAL> {FLOAT} { yybegin(YYINITIAL); return ChasmTypes.FLOAT; }
 <YYINITIAL> {INTEGER} { yybegin(YYINITIAL); return ChasmTypes.INTEGER; }
-<YYINITIAL> {STRING} { yybegin(YYINITIAL); return ChasmTypes.STRING; }
-<YYINITIAL> {CHAR} { yybegin(YYINITIAL); return ChasmTypes.CHAR; }
 <YYINITIAL> {IDENT} { yybegin(YYINITIAL); return ChasmTypes.IDENT; }
 <YYINITIAL> {PLUS} { yybegin(YYINITIAL); return ChasmTypes.PLUS; }
 <YYINITIAL> {MINUS} { yybegin(YYINITIAL); return ChasmTypes.MINUS; }
@@ -104,4 +105,16 @@ DOLLAR="$"
 <YYINITIAL> {LBRACE} { yybegin(YYINITIAL); return ChasmTypes.LBRACE; }
 <YYINITIAL> {RBRACE} { yybegin(YYINITIAL); return ChasmTypes.RBRACE; }
 <YYINITIAL> {DOLLAR} { yybegin(YYINITIAL); return ChasmTypes.DOLLAR; }
+
+<YYINITIAL> {QUOTE} { yybegin(WAITING_CLOSE_QUOTE); return ChasmTypes.QUOTE; }
+<WAITING_CLOSE_QUOTE> \\\" { yybegin(WAITING_CLOSE_QUOTE); return ChasmTypes.ESCAPED_STRING; }
+<WAITING_CLOSE_QUOTE> \\\\ { yybegin(WAITING_CLOSE_QUOTE); return ChasmTypes.ESCAPED_STRING; }
+<WAITING_CLOSE_QUOTE> \" { yybegin(YYINITIAL); return ChasmTypes.QUOTE; }
+<WAITING_CLOSE_QUOTE> [^] { yybegin(WAITING_CLOSE_QUOTE); return ChasmTypes.UNESCAPED_STRING; }
+<YYINITIAL> {SINGLE_QUOTE} { yybegin(WAITING_CLOSE_SINGLE_QUOTE); return ChasmTypes.SINGLE_QUOTE; }
+<WAITING_CLOSE_SINGLE_QUOTE> \\' { yybegin(WAITING_CLOSE_SINGLE_QUOTE); return ChasmTypes.ESCAPED_STRING; }
+<WAITING_CLOSE_SINGLE_QUOTE> \\\\ { yybegin(WAITING_CLOSE_SINGLE_QUOTE); return ChasmTypes.ESCAPED_STRING; }
+<WAITING_CLOSE_SINGLE_QUOTE> ' { yybegin(YYINITIAL); return ChasmTypes.SINGLE_QUOTE; }
+<WAITING_CLOSE_SINGLE_QUOTE> [^] { yybegin(WAITING_CLOSE_SINGLE_QUOTE); return ChasmTypes.UNESCAPED_STRING; }
+
 [^] { return TokenType.BAD_CHARACTER; }

@@ -14,6 +14,7 @@ class ChasmSyntaxHighlighter : SyntaxHighlighterBase() {
         val IDENTIFIER = createTextAttributesKey("CHASM_IDENTIFIER", DefaultLanguageHighlighterColors.IDENTIFIER)
         val NUMBER = createTextAttributesKey("CHASM_NUMBER", DefaultLanguageHighlighterColors.NUMBER)
         val STRING = createTextAttributesKey("CHASM_STRING", DefaultLanguageHighlighterColors.STRING)
+        val ESCAPED_STRING = createTextAttributesKey("CHASM_ESCAPED_STRING", DefaultLanguageHighlighterColors.VALID_STRING_ESCAPE)
         val KEYWORD = createTextAttributesKey("CHASM_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD)
         val OPERATOR = createTextAttributesKey("CHASM_OPERATOR", DefaultLanguageHighlighterColors.OPERATION_SIGN)
         val DOT = createTextAttributesKey("CHASM_DOT", DefaultLanguageHighlighterColors.DOT)
@@ -31,6 +32,7 @@ class ChasmSyntaxHighlighter : SyntaxHighlighterBase() {
         val IDENTIFIER_KEYS = arrayOf(IDENTIFIER)
         val NUMBER_KEYS = arrayOf(NUMBER)
         val STRING_KEYS = arrayOf(STRING)
+        val ESCAPED_STRING_KEYS = arrayOf(ESCAPED_STRING)
         val KEYWORD_KEYS = arrayOf(KEYWORD)
         val OPERATOR_KEYS = arrayOf(OPERATOR)
         val DOT_KEYS = arrayOf(DOT)
@@ -50,8 +52,10 @@ class ChasmSyntaxHighlighter : SyntaxHighlighterBase() {
             ChasmTypes.DOLLAR -> IDENTIFIER_KEYS
             ChasmTypes.INTEGER,
             ChasmTypes.FLOAT -> NUMBER_KEYS
-            ChasmTypes.STRING,
-            ChasmTypes.CHAR -> STRING_KEYS
+            ChasmTypes.UNESCAPED_STRING,
+            ChasmTypes.QUOTE,
+            ChasmTypes.SINGLE_QUOTE -> STRING_KEYS
+            ChasmTypes.ESCAPED_STRING -> ESCAPED_STRING_KEYS
             ChasmTypes.NULL,
             ChasmTypes.BOOL -> KEYWORD_KEYS
             ChasmTypes.BITWISE_AND,

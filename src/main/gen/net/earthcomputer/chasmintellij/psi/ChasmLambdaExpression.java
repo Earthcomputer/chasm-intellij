@@ -23,7 +23,7 @@ public interface ChasmLambdaExpression extends ChasmExpression, PsiNameIdentifie
   @NotNull
   ChasmLambdaExpression setName(@NotNull String name);
 
-  @NotNull
+  @Nullable
   ChasmExpression getBody();
 
 }

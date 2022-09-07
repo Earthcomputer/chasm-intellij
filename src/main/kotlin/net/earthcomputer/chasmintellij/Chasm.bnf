@@ -20,6 +20,7 @@ chasmFile ::= SKIP? expression SKIP? <<eof>>
 expression ::= lambdaExpression | ternaryPrecedence
 
 lambdaExpression ::= identifier SKIP? LAMBDA SKIP? expression {
+pin = 3
 extends=expression
 implements = "com.intellij.psi.PsiNameIdentifierOwner"
 methods=[argumentElement="identifier" getArgumentName nameIdentifier="identifier" getName setName body="expression"]
@@ -28,6 +29,7 @@ methods=[argumentElement="identifier" getArgumentName nameIdentifier="identifier
 private ternaryPrecedence ::= ternaryExpression | booleanOrPrecedence
 
 ternaryExpression ::= booleanOrPrecedence SKIP? TERNARY SKIP? ternaryPrecedence SKIP? COLON SKIP? ternaryPrecedence {
+pin = 3
 extends=expression
 methods=[condition="expression[0]" trueExpr="expression[1]" falseExpr="expression[2]"]
 }
@@ -35,6 +37,7 @@ methods=[condition="expression[0]" trueExpr="expression[1]" falseExpr="expressio
 private booleanOrPrecedence ::= booleanAndPrecedence booleanOrExpression?
 
 left booleanOrExpression ::= SKIP? BOOL_OR SKIP? booleanOrPrecedence {
+pin = 2
 extends=expression
 implements="net.earthcomputer.chasmintellij.psi.ChasmBinaryExpression"
 methods=[left="expression[0]" right="expression[1]"]
@@ -43,6 +46,7 @@ methods=[left="expression[0]" right="expression[1]"]
 private booleanAndPrecedence ::= bitwiseOrPrecedence booleanAndExpression?
 
 left booleanAndExpression ::= SKIP? BOOL_AND SKIP? booleanAndPrecedence {
+pin = 2
 extends=expression
 implements="net.earthcomputer.chasmintellij.psi.ChasmBinaryExpression"
 methods=[left="expression[0]" right="expression[1]"]
@@ -51,6 +55,7 @@ methods=[left="expression[0]" right="expression[1]"]
 private bitwiseOrPrecedence ::= bitwiseXorPrecedence bitwiseOrExpression?
 
 left bitwiseOrExpression ::= SKIP? BITWISE_OR SKIP? bitwiseOrPrecedence {
+pin = 2
 extends=expression
 implements="net.earthcomputer.chasmintellij.psi.ChasmBinaryExpression"
 methods=[left="expression[0]" right="expression[1]"]
@@ -59,6 +64,7 @@ methods=[left="expression[0]" right="expression[1]"]
 private bitwiseXorPrecedence ::= bitwiseAndPrecedence bitwiseXorExpression?
 
 left bitwiseXorExpression ::= SKIP? BITWISE_XOR SKIP? bitwiseXorPrecedence {
+pin = 2
 extends=expression
 implements="net.earthcomputer.chasmintellij.psi.ChasmBinaryExpression"
 methods=[left="expression[0]" right="expression[1]"]
@@ -67,6 +73,7 @@ methods=[left="expression[0]" right="expression[1]"]
 private bitwiseAndPrecedence ::= equalityPrecedence bitwiseAndExpression?
 
 left bitwiseAndExpression ::= SKIP? BITWISE_AND SKIP? bitwiseAndPrecedence {
+pin = 2
 extends=expression
 implements="net.earthcomputer.chasmintellij.psi.ChasmBinaryExpression"
 methods=[left="expression[0]" right="expression[1]"]
@@ -75,6 +82,7 @@ methods=[left="expression[0]" right="expression[1]"]
 private equalityPrecedence ::= relationalPrecedence equalityExpression?
 
 left equalityExpression ::= SKIP? (EQUAL | NOT_EQUAL) SKIP? equalityPrecedence {
+pin = 2
 extends=expression
 implements="net.earthcomputer.chasmintellij.psi.ChasmBinaryExpression"
 methods=[left="expression[0]" right="expression[1]"]
@@ -83,6 +91,7 @@ methods=[left="expression[0]" right="expression[1]"]
 private relationalPrecedence ::= shiftPrecedence relationalExpression?
 
 left relationalExpression ::= SKIP? (LESS_THAN | LESS_THAN_EQUAL | GREATER_THAN | GREATER_THAN_EQUAL) SKIP? relationalPrecedence {
+pin = 2
 extends=expression
 implements="net.earthcomputer.chasmintellij.psi.ChasmBinaryExpression"
 methods=[left="expression[0]" right="expression[1]"]
@@ -91,6 +100,7 @@ methods=[left="expression[0]" right="expression[1]"]
 private shiftPrecedence ::= additivePrecedence shiftExpression?
 
 left shiftExpression ::= SKIP? (SHIFT_LEFT | SHIFT_RIGHT | SHIFT_RIGHT_UNSIGNED) SKIP? shiftPrecedence {
+pin = 2
 extends=expression
 implements="net.earthcomputer.chasmintellij.psi.ChasmBinaryExpression"
 methods=[left="expression[0]" right="expression[1]"]
@@ -99,6 +109,7 @@ methods=[left="expression[0]" right="expression[1]"]
 private additivePrecedence ::= multiplicativePrecedence additiveExpression?
 
 left additiveExpression ::= SKIP? (PLUS | MINUS) SKIP? additivePrecedence {
+pin = 2
 extends=expression
 implements="net.earthcomputer.chasmintellij.psi.ChasmBinaryExpression"
 methods=[left="expression[0]" right="expression[1]"]
@@ -107,6 +118,7 @@ methods=[left="expression[0]" right="expression[1]"]
 private multiplicativePrecedence ::= unaryPrecedence multiplicativeExpression?
 
 left multiplicativeExpression ::= SKIP? (MULTIPLY | DIVIDE | MODULO) SKIP? multiplicativePrecedence {
+pin = 2
 extends=expression
 implements="net.earthcomputer.chasmintellij.psi.ChasmBinaryExpression"
 methods=[left="expression[0]" right="expression[1]"]
@@ -115,6 +127,7 @@ methods=[left="expression[0]" right="expression[1]"]
 private unaryPrecedence ::= unaryExpression | argumentPrecedence
 
 unaryExpression ::= (PLUS | MINUS | NOT | INVERT) SKIP? unaryPrecedence {
+pin = 1
 extends=expression
 methods=[getOperator operand="expression"]
 }
@@ -123,49 +136,70 @@ private argumentPrecedence ::= primaryExpression argumentExpression?
 
 private argumentExpression ::= (callExpression | indexExpression | memberExpression)*
 
-left callExpression ::= SKIP? LPAREN SKIP? expression SKIP? RPAREN {
+left callExpression ::= SKIP? LPAREN SKIP? bracketsBody SKIP? RPAREN {
+pin = 2
 extends=expression
 methods=[function="expression[0]" argument="expression[1]"]
 }
 
-left indexExpression ::= SKIP? LBRACKET SKIP? expression SKIP? RBRACKET {
+left indexExpression ::= SKIP? LBRACKET SKIP? bracketsBody SKIP? RBRACKET {
+pin = 2
 extends=expression
 methods=[owner="expression[0]" index="expression[1]"]
 }
 
 left memberExpression ::= SKIP? DOT SKIP? identifier {
+pin = 2
 extends=expression
 methods=[owner="expression[0]" memberNameElement="identifier" getMemberName]
 }
 
 private primaryExpression ::= literalExpression | referenceExpression | parenthesesExpression | listExpression | mapExpression
 
-literalExpression ::= NULL | BOOL | FLOAT | INTEGER | STRING | CHAR {
+literalExpression ::= NULL | BOOL | FLOAT | INTEGER | (QUOTE (UNESCAPED_STRING | ESCAPED_STRING)* QUOTE) | (SINGLE_QUOTE (UNESCAPED_STRING | ESCAPED_STRING) SINGLE_QUOTE) {
+pin = 1
 extends=expression
 implements=["com.intellij.psi.ContributedReferenceHost"]
 methods=[getReferences]
 }
 
 referenceExpression ::= DOLLAR? identifier {
+pin = 2
 extends=expression
 methods=[referenceElement="identifier" getReferenceName getReference isGlobal]
 }
 
-parenthesesExpression ::= LPAREN SKIP? expression SKIP? RPAREN {
+private bracketsBody ::= expression {
+recoverWhile = bracketsRecover
+}
+private bracketsRecover ::= !(RPAREN | RBRACE | RBRACKET)
+
+private listBracketsBody ::= expression {
+recoverWhile = listBracketsRecover
+}
+private listBracketsRecover ::= !(RPAREN | RBRACE | RBRACKET | COMMA)
+
+parenthesesExpression ::= LPAREN SKIP? bracketsBody SKIP? RPAREN {
+pin = 1
 extends=expression
 }
 
-listExpression ::= LBRACKET SKIP? (expression (SKIP? COMMA SKIP? expression)* SKIP? (COMMA SKIP?)?)? RBRACKET {
+listExpression ::= LBRACKET SKIP? (listBracketsBody (SKIP? COMMA SKIP? listBracketsBody)* SKIP? (COMMA SKIP?)?)? RBRACKET {
+pin = 1
 extends=expression
 }
 
 mapExpression ::= LBRACE SKIP? (mapEntry (SKIP? COMMA SKIP? mapEntry)* SKIP? (COMMA SKIP?)?)? RBRACE {
+pin = 1
 extends=expression
 }
 
 mapEntry ::= identifier SKIP? COLON SKIP? expression {
+pin=1
 implements = "com.intellij.psi.PsiNameIdentifierOwner"
 methods = [keyElement="identifier" nameIdentifier="identifier" getKey getName setName value="expression"]
+recoverWhile = mapEntryRecover
 }
+private mapEntryRecover ::= !(COMMA | RBRACE | RPAREN | RBRACKET)
 
 identifier ::= IDENT

@@ -35,9 +35,9 @@ public class ChasmUnaryExpressionImpl extends ChasmExpressionImpl implements Cha
   }
 
   @Override
-  @NotNull
+  @Nullable
   public ChasmExpression getOperand() {
-    return findNotNullChildByClass(ChasmExpression.class);
+    return findChildByClass(ChasmExpression.class);
   }
 
 }
