@@ -1,18 +1,25 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.earthcomputer.chasmintellij</id>
+    <id>net.earthcomputer.chasmintellij</id>
     <name>chasm-intellij</name>
     <vendor>earthcomputer</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.earthcomputer.chasmintellij.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.earthcomputer.chasmintellij.services.MyProjectService"/>
+        <annotator language="Chasm"
+                   implementationClass="net.earthcomputer.chasmintellij.ChasmAnnotator"/>
+        <colorSettingsPage implementation="net.earthcomputer.chasmintellij.ChasmColorSettingsPage"/>
+        <fileType name="Chassembly"
+                  implementationClass="net.earthcomputer.chasmintellij.ChasmFileType"
+                  fieldName="INSTANCE"
+                  language="Chasm"
+                  extensions="chasm"/>
+        <lang.parserDefinition language="Chasm"
+                               implementationClass="net.earthcomputer.chasmintellij.ChasmParserDefinition"/>
+        <lang.refactoringSupport language="Chasm"
+                                 implementationClass="net.earthcomputer.chasmintellij.ChasmRefactoringSupportProvider"/>
+        <lang.syntaxHighlighterFactory language="Chasm"
+                                       implementationClass="net.earthcomputer.chasmintellij.ChasmSyntaxHighlighterFactory"/>
     </extensions>
-
-    <applicationListeners>
-        <listener class="com.github.earthcomputer.chasmintellij.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
 </idea-plugin>

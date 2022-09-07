@@ -1,0 +1,107 @@
+package net.earthcomputer.chasmintellij;
+
+import com.intellij.lexer.FlexLexer;
+import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.TokenType;
+import net.earthcomputer.chasmintellij.psi.ChasmTypes;
+
+%%
+
+%class ChasmLexer
+%implements FlexLexer
+%unicode
+%function advance
+%type IElementType
+%eof{  return;
+%eof}
+
+SKIP=[ \n\r\t]+
+
+NULL="null"
+BOOL="true" | "false"
+FLOAT=("+" | "-")? [0-9]+ "." [0-9]+ ("e" ("+" | "-")? [0-9]+)?
+INTEGER=("0x" [0-9a-fA-F]+) | ("0b" [0-1]+) | (("+" | "-")? [0-9]+)
+STRING=\"([^\\\"] | \\\\ | \\\")*\"
+CHAR='([^'] | \\')'
+
+IDENT=[_a-zA-Z] [_a-zA-Z0-9]*
+
+PLUS="+"
+MINUS="-"
+NOT="!"
+INVERT="~"
+MULTIPLY="*"
+DIVIDE="/"
+MODULO="%"
+SHIFT_LEFT="<<"
+SHIFT_RIGHT=">>"
+SHIFT_RIGHT_UNSIGNED=">>>"
+LESS_THAN="<"
+LESS_THAN_EQUAL="<="
+GREATER_THAN=">"
+GREATER_THAN_EQUAL=">="
+EQUAL="="
+NOT_EQUAL="!="
+BITWISE_AND="&"
+BITWISE_XOR="^"
+BITWISE_OR="|"
+BOOL_AND="&&"
+BOOL_OR="||"
+TERNARY="?"
+LAMBDA="->"
+
+DOT="."
+COMMA=","
+COLON=":"
+LPAREN="("
+RPAREN=")"
+LBRACKET="["
+RBRACKET="]"
+LBRACE="{"
+RBRACE="}"
+DOLLAR="$"
+
+%%
+
+<YYINITIAL> {SKIP} { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+<YYINITIAL> {NULL} { yybegin(YYINITIAL); return ChasmTypes.NULL; }
+<YYINITIAL> {BOOL} { yybegin(YYINITIAL); return ChasmTypes.BOOL; }
+<YYINITIAL> {FLOAT} { yybegin(YYINITIAL); return ChasmTypes.FLOAT; }
+<YYINITIAL> {INTEGER} { yybegin(YYINITIAL); return ChasmTypes.INTEGER; }
+<YYINITIAL> {STRING} { yybegin(YYINITIAL); return ChasmTypes.STRING; }
+<YYINITIAL> {CHAR} { yybegin(YYINITIAL); return ChasmTypes.CHAR; }
+<YYINITIAL> {IDENT} { yybegin(YYINITIAL); return ChasmTypes.IDENT; }
+<YYINITIAL> {PLUS} { yybegin(YYINITIAL); return ChasmTypes.PLUS; }
+<YYINITIAL> {MINUS} { yybegin(YYINITIAL); return ChasmTypes.MINUS; }
+<YYINITIAL> {NOT} { yybegin(YYINITIAL); return ChasmTypes.NOT; }
+<YYINITIAL> {INVERT} { yybegin(YYINITIAL); return ChasmTypes.INVERT; }
+<YYINITIAL> {MULTIPLY} { yybegin(YYINITIAL); return ChasmTypes.MULTIPLY; }
+<YYINITIAL> {DIVIDE} { yybegin(YYINITIAL); return ChasmTypes.DIVIDE; }
+<YYINITIAL> {MODULO} { yybegin(YYINITIAL); return ChasmTypes.MODULO; }
+<YYINITIAL> {SHIFT_LEFT} { yybegin(YYINITIAL); return ChasmTypes.SHIFT_LEFT; }
+<YYINITIAL> {SHIFT_RIGHT} { yybegin(YYINITIAL); return ChasmTypes.SHIFT_RIGHT; }
+<YYINITIAL> {SHIFT_RIGHT_UNSIGNED} { yybegin(YYINITIAL); return ChasmTypes.SHIFT_RIGHT_UNSIGNED; }
+<YYINITIAL> {LESS_THAN} { yybegin(YYINITIAL); return ChasmTypes.LESS_THAN; }
+<YYINITIAL> {LESS_THAN_EQUAL} { yybegin(YYINITIAL); return ChasmTypes.LESS_THAN_EQUAL; }
+<YYINITIAL> {GREATER_THAN} { yybegin(YYINITIAL); return ChasmTypes.GREATER_THAN; }
+<YYINITIAL> {GREATER_THAN_EQUAL} { yybegin(YYINITIAL); return ChasmTypes.GREATER_THAN_EQUAL; }
+<YYINITIAL> {EQUAL} { yybegin(YYINITIAL); return ChasmTypes.EQUAL; }
+<YYINITIAL> {NOT_EQUAL} { yybegin(YYINITIAL); return ChasmTypes.NOT_EQUAL; }
+<YYINITIAL> {BITWISE_AND} { yybegin(YYINITIAL); return ChasmTypes.BITWISE_AND; }
+<YYINITIAL> {BITWISE_XOR} { yybegin(YYINITIAL); return ChasmTypes.BITWISE_XOR; }
+<YYINITIAL> {BITWISE_OR} { yybegin(YYINITIAL); return ChasmTypes.BITWISE_OR; }
+<YYINITIAL> {BOOL_AND} { yybegin(YYINITIAL); return ChasmTypes.BOOL_AND; }
+<YYINITIAL> {BOOL_OR} { yybegin(YYINITIAL); return ChasmTypes.BOOL_OR; }
+<YYINITIAL> {TERNARY} { yybegin(YYINITIAL); return ChasmTypes.TERNARY; }
+<YYINITIAL> {LAMBDA} { yybegin(YYINITIAL); return ChasmTypes.LAMBDA; }
+<YYINITIAL> {DOT} { yybegin(YYINITIAL); return ChasmTypes.DOT; }
+<YYINITIAL> {COMMA} { yybegin(YYINITIAL); return ChasmTypes.COMMA; }
+<YYINITIAL> {COLON} { yybegin(YYINITIAL); return ChasmTypes.COLON; }
+<YYINITIAL> {LPAREN} { yybegin(YYINITIAL); return ChasmTypes.LPAREN; }
+<YYINITIAL> {RPAREN} { yybegin(YYINITIAL); return ChasmTypes.RPAREN; }
+<YYINITIAL> {LBRACKET} { yybegin(YYINITIAL); return ChasmTypes.LBRACKET; }
+<YYINITIAL> {RBRACKET} { yybegin(YYINITIAL); return ChasmTypes.RBRACKET; }
+<YYINITIAL> {LBRACE} { yybegin(YYINITIAL); return ChasmTypes.LBRACE; }
+<YYINITIAL> {RBRACE} { yybegin(YYINITIAL); return ChasmTypes.RBRACE; }
+<YYINITIAL> {DOLLAR} { yybegin(YYINITIAL); return ChasmTypes.DOLLAR; }
+[^] { return TokenType.BAD_CHARACTER; }
