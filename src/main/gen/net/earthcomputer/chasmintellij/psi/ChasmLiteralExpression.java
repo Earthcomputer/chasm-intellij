@@ -12,4 +12,7 @@ public interface ChasmLiteralExpression extends ChasmExpression, ContributedRefe
   @NotNull
   PsiReference[] getReferences();
 
+  @Nullable
+  Object getValue();
+
 }

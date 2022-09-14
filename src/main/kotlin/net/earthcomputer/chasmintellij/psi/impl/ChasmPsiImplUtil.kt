@@ -14,6 +14,10 @@ import com.intellij.util.containers.map2Array
 import net.earthcomputer.chasmintellij.ChasmIcons
 import net.earthcomputer.chasmintellij.chasmElementFactory
 import net.earthcomputer.chasmintellij.psi.*
+import net.earthcomputer.chasmintellij.type.ChasmTypeInference
+import net.earthcomputer.chasmintellij.type.MapType
+import net.earthcomputer.chasmintellij.type.UnionType
+import kotlin.streams.asSequence
 
 fun getKey(entry: ChasmMapEntry): String {
     return entry.keyElement.text
@@ -73,7 +77,7 @@ private fun resolve(reference: ChasmReferenceExpression): PsiElement? {
     }
 }
 
-fun collectVariants(reference: ChasmReferenceExpression): Array<Any> {
+private fun collectVariants(reference: ChasmReferenceExpression): Array<Any> {
     val variants = mutableMapOf<String, PsiElement>()
     val parents = reference.parents(false).takeWhile { it !is ChasmFile }.toMutableList()
     if (reference.isGlobal) {
@@ -98,9 +102,56 @@ fun collectVariants(reference: ChasmReferenceExpression): Array<Any> {
     }
 }
 
-fun handleElementRename(reference: ChasmReferenceExpression, name: String): ChasmReferenceExpression {
+private fun handleElementRename(reference: ChasmReferenceExpression, name: String): ChasmReferenceExpression {
     reference.referenceElement.replace(reference.project.chasmElementFactory.createIdentifier(name))
     return reference
+}
+
+fun getReference(memberExpr: ChasmMemberExpression): PsiReference? {
+    val memberNameElement = memberExpr.memberNameElement ?: return null
+    val memberName = memberNameElement.text
+    return CachedValuesManager.getCachedValue(memberExpr) {
+        CachedValueProvider.Result(object : PsiPolyVariantReferenceBase<ChasmMemberExpression>(memberExpr, memberNameElement.textRangeInParent) {
+            override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> {
+                return resolve(element, memberName)
+            }
+
+            override fun getVariants(): Array<Any> {
+                return collectVariants(element)
+            }
+
+            override fun handleElementRename(newElementName: String): PsiElement {
+                return handleElementRename(element, newElementName)
+            }
+        }, PsiModificationTracker.MODIFICATION_COUNT)
+    }
+}
+
+private fun resolve(memberExpr: ChasmMemberExpression, memberName: String): Array<ResolveResult> {
+    val ownerType = ChasmTypeInference.infer(memberExpr.expression) ?: return ResolveResult.EMPTY_ARRAY
+    return ((ownerType as? UnionType)?.types ?: setOf(ownerType)).asSequence()
+        .filterIsInstance<MapType>()
+        .mapNotNull { mapType -> mapType.definiteValues[memberName] ?: mapType.possibleValues[memberName] }
+        .flatMap { it.entryPsis.asSequence() }
+        .map(::PsiElementResolveResult)
+        .toList()
+        .toTypedArray()
+}
+
+private fun collectVariants(memberExpr: ChasmMemberExpression): Array<Any> {
+    val ownerType = ChasmTypeInference.infer(memberExpr.expression) ?: return emptyArray()
+    return ((ownerType as? UnionType)?.types ?: setOf(ownerType)).asSequence()
+        .filterIsInstance<MapType>()
+        .flatMap { it.definiteValues.keys.asSequence() + it.possibleValues.keys.asSequence() }
+        .distinct()
+        .map { LookupElementBuilder.create(it).withIcon(ChasmIcons.FILE) }
+        .toList()
+        .toTypedArray()
+}
+
+private fun handleElementRename(memberExpr: ChasmMemberExpression, name: String): ChasmMemberExpression {
+    memberExpr.memberNameElement?.replace(memberExpr.project.chasmElementFactory.createIdentifier(name))
+    return memberExpr
 }
 
 fun getArgumentName(lambda: ChasmLambdaExpression): String {
@@ -116,8 +167,8 @@ fun setName(lambda: ChasmLambdaExpression, name: String): ChasmLambdaExpression 
     return lambda
 }
 
-fun getMemberName(memberExpr: ChasmMemberExpression): String {
-    return memberExpr.memberNameElement.text
+fun getMemberName(memberExpr: ChasmMemberExpression): String? {
+    return memberExpr.memberNameElement?.text
 }
 
 fun getOperator(unaryExpr: ChasmUnaryExpression): IElementType {
@@ -126,4 +177,23 @@ fun getOperator(unaryExpr: ChasmUnaryExpression): IElementType {
 
 fun getReferences(literal: ChasmLiteralExpression): Array<PsiReference> {
     return PsiReferenceService.getService().getContributedReferences(literal)
+}
+
+fun getValue(literal: ChasmLiteralExpression): Any? {
+    val text = literal.text.trim()
+    return when {
+        text.startsWith("\"") -> text.substring(1, text.length - 1).replace("\\\"", "\"").replace("\\\\", "\\")
+        text.startsWith("'") -> text.substring(1, text.length - 1)
+            .replace("\\'", "'")
+            .replace("\\\\", "\\")
+            .chars()
+            .asSequence()
+            .singleOrNull()
+            ?.toLong()
+        text == "false" -> false
+        text == "true" -> true
+        text == "null" -> null
+        text.contains('.') -> text.toDoubleOrNull()
+        else -> text.toLongOrNull()
+    }
 }

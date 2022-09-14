@@ -4,6 +4,7 @@ package net.earthcomputer.chasmintellij.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiReference;
 
 public interface ChasmMemberExpression extends ChasmExpression {
 
@@ -13,7 +14,10 @@ public interface ChasmMemberExpression extends ChasmExpression {
   @Nullable
   ChasmIdentifier getMemberNameElement();
 
-  @NotNull
+  @Nullable
   String getMemberName();
+
+  @Nullable
+  PsiReference getReference();
 
 }

@@ -34,4 +34,10 @@ public class ChasmLiteralExpressionImpl extends ChasmExpressionImpl implements C
     return ChasmPsiImplUtil.getReferences(this);
   }
 
+  @Override
+  @Nullable
+  public Object getValue() {
+    return ChasmPsiImplUtil.getValue(this);
+  }
+
 }

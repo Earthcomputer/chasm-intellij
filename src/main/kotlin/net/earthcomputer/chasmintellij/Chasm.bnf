@@ -151,7 +151,7 @@ methods=[owner="expression[0]" index="expression[1]"]
 left memberExpression ::= SKIP? DOT SKIP? identifier {
 pin = 2
 extends=expression
-methods=[owner="expression[0]" memberNameElement="identifier" getMemberName]
+methods=[owner="expression[0]" memberNameElement="identifier" getMemberName getReference]
 }
 
 private primaryExpression ::= literalExpression | referenceExpression | parenthesesExpression | listExpression | mapExpression
@@ -160,7 +160,7 @@ literalExpression ::= NULL | BOOL | FLOAT | INTEGER | (QUOTE (UNESCAPED_STRING |
 pin = 1
 extends=expression
 implements=["com.intellij.psi.ContributedReferenceHost"]
-methods=[getReferences]
+methods=[getReferences getValue]
 }
 
 referenceExpression ::= DOLLAR? identifier {

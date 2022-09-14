@@ -9,6 +9,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static net.earthcomputer.chasmintellij.psi.ChasmTypes.*;
 import net.earthcomputer.chasmintellij.psi.*;
+import com.intellij.psi.PsiReference;
 
 public class ChasmMemberExpressionImpl extends ChasmExpressionImpl implements ChasmMemberExpression {
 
@@ -40,9 +41,15 @@ public class ChasmMemberExpressionImpl extends ChasmExpressionImpl implements Ch
   }
 
   @Override
-  @NotNull
+  @Nullable
   public String getMemberName() {
     return ChasmPsiImplUtil.getMemberName(this);
+  }
+
+  @Override
+  @Nullable
+  public PsiReference getReference() {
+    return ChasmPsiImplUtil.getReference(this);
   }
 
 }
