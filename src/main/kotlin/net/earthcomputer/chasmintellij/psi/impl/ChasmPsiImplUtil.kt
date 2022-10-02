@@ -6,10 +6,7 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.*
 import com.intellij.psi.tree.IElementType
-import com.intellij.psi.util.CachedValueProvider
-import com.intellij.psi.util.CachedValuesManager
-import com.intellij.psi.util.PsiModificationTracker
-import com.intellij.psi.util.parents
+import com.intellij.psi.util.*
 import com.intellij.util.containers.map2Array
 import net.earthcomputer.chasmintellij.ChasmIcons
 import net.earthcomputer.chasmintellij.chasmElementFactory
@@ -19,11 +16,23 @@ import net.earthcomputer.chasmintellij.type.MapType
 import net.earthcomputer.chasmintellij.type.UnionType
 import kotlin.streams.asSequence
 
-fun getKey(entry: ChasmMapEntry): String {
-    return entry.keyElement.text
+fun getKeyLiteral(entry: ChasmMapEntry): ChasmLiteralExpression? {
+    return entry.firstChild as? ChasmLiteralExpression
 }
 
-fun getName(entry: ChasmMapEntry): String {
+fun getKeyElement(entry: ChasmMapEntry): PsiElement {
+    return entry.keyIdentifier ?: entry.keyLiteral!!
+}
+
+fun getKey(entry: ChasmMapEntry): String? {
+    return entry.keyIdentifier?.text ?: entry.keyLiteral!!.value as? String
+}
+
+fun getValue(entry: ChasmMapEntry): ChasmExpression? {
+    return entry.expressionList.lastOrNull()?.takeIf { it != entry.keyLiteral }
+}
+
+fun getName(entry: ChasmMapEntry): String? {
     return getKey(entry)
 }
 
@@ -87,7 +96,8 @@ private fun collectVariants(reference: ChasmReferenceExpression): Array<Any> {
         when (parent) {
             is ChasmMapExpression -> {
                 for (entry in parent.mapEntryList) {
-                    variants.putIfAbsent(entry.key, entry)
+                    val key = entry.key ?: continue
+                    variants.putIfAbsent(key, entry)
                 }
             }
             is ChasmLambdaExpression -> variants.putIfAbsent(parent.argumentName, parent)

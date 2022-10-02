@@ -853,12 +853,12 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // identifier SKIP? COLON SKIP? expression
+  // (literalExpression | identifier) SKIP? COLON SKIP? expression
   public static boolean mapEntry(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "mapEntry")) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, MAP_ENTRY, "<map entry>");
-    r = identifier(b, l + 1);
+    r = mapEntry_0(b, l + 1);
     p = r; // pin = 1
     r = r && report_error_(b, mapEntry_1(b, l + 1));
     r = p && report_error_(b, consumeToken(b, COLON)) && r;
@@ -866,6 +866,15 @@ public class ChasmParser implements PsiParser, LightPsiParser {
     r = p && expression(b, l + 1) && r;
     exit_section_(b, l, m, r, p, ChasmParser::mapEntryRecover);
     return r || p;
+  }
+
+  // literalExpression | identifier
+  private static boolean mapEntry_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "mapEntry_0")) return false;
+    boolean r;
+    r = literalExpression(b, l + 1);
+    if (!r) r = identifier(b, l + 1);
+    return r;
   }
 
   // SKIP?

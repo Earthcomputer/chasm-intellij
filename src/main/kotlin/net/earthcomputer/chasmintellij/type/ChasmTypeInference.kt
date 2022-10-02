@@ -53,7 +53,7 @@ object ChasmTypeInference {
     private fun doInfer(expression: ChasmExpression): ChasmType? {
         return when (expression) {
             is ChasmMapExpression -> MapType(
-                expression.mapEntryList.associate { it.key to MapEntryResolution(it.value?.let(::inferUncached), setOf(it)) },
+                expression.mapEntryList.mapNotNull { entry -> entry.key?.let { it to entry } }.associate { (key, entry) -> key to MapEntryResolution(entry.value?.let(::inferUncached), setOf(entry)) },
                 emptyMap()
             )
             is ChasmListExpression -> ListType(ChasmType.union(expression.expressionList.mapNotNull(::inferUncached)))

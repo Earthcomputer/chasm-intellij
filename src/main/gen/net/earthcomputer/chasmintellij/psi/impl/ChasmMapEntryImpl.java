@@ -29,24 +29,42 @@ public class ChasmMapEntryImpl extends ASTWrapperPsiElement implements ChasmMapE
 
   @Override
   @NotNull
-  public ChasmIdentifier getKeyElement() {
-    return findNotNullChildByClass(ChasmIdentifier.class);
+  public List<ChasmExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ChasmExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public ChasmIdentifier getKeyIdentifier() {
+    return findChildByClass(ChasmIdentifier.class);
+  }
+
+  @Override
+  @Nullable
+  public ChasmLiteralExpression getKeyLiteral() {
+    return ChasmPsiImplUtil.getKeyLiteral(this);
   }
 
   @Override
   @NotNull
+  public PsiElement getKeyElement() {
+    return ChasmPsiImplUtil.getKeyElement(this);
+  }
+
+  @Override
+  @Nullable
   public ChasmIdentifier getNameIdentifier() {
-    return getKeyElement();
+    return getKeyIdentifier();
   }
 
   @Override
-  @NotNull
+  @Nullable
   public String getKey() {
     return ChasmPsiImplUtil.getKey(this);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public String getName() {
     return ChasmPsiImplUtil.getName(this);
   }
@@ -60,7 +78,7 @@ public class ChasmMapEntryImpl extends ASTWrapperPsiElement implements ChasmMapE
   @Override
   @Nullable
   public ChasmExpression getValue() {
-    return findChildByClass(ChasmExpression.class);
+    return ChasmPsiImplUtil.getValue(this);
   }
 
 }

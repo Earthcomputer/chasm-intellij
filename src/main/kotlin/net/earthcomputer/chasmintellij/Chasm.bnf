@@ -194,10 +194,10 @@ pin = 1
 extends=expression
 }
 
-mapEntry ::= identifier SKIP? COLON SKIP? expression {
+mapEntry ::= (literalExpression | identifier) SKIP? COLON SKIP? expression {
 pin=1
 implements = "com.intellij.psi.PsiNameIdentifierOwner"
-methods = [keyElement="identifier" nameIdentifier="identifier" getKey getName setName value="expression"]
+methods = [keyIdentifier="identifier" getKeyLiteral getKeyElement nameIdentifier="identifier" getKey getName setName getValue]
 recoverWhile = mapEntryRecover
 }
 private mapEntryRecover ::= !(COMMA | RBRACE | RPAREN | RBRACKET)
