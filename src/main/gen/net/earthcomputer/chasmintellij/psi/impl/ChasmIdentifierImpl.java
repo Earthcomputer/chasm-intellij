@@ -27,4 +27,10 @@ public class ChasmIdentifierImpl extends ASTWrapperPsiElement implements ChasmId
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public String getValue() {
+    return ChasmPsiImplUtil.getValue(this);
+  }
+
 }

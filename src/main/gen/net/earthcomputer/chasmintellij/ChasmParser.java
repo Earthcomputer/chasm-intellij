@@ -556,14 +556,47 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENT
+  // IDENT | (BACKTICK (ESCAPED_STRING | IDENT)* BACKTICK)
   public static boolean identifier(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "identifier")) return false;
-    if (!nextTokenIs(b, IDENT)) return false;
+    if (!nextTokenIs(b, "<identifier>", BACKTICK, IDENT)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, IDENTIFIER, "<identifier>");
+    r = consumeToken(b, IDENT);
+    if (!r) r = identifier_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // BACKTICK (ESCAPED_STRING | IDENT)* BACKTICK
+  private static boolean identifier_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "identifier_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, IDENT);
-    exit_section_(b, m, IDENTIFIER, r);
+    r = consumeToken(b, BACKTICK);
+    r = r && identifier_1_1(b, l + 1);
+    r = r && consumeToken(b, BACKTICK);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (ESCAPED_STRING | IDENT)*
+  private static boolean identifier_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "identifier_1_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!identifier_1_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "identifier_1_1", c)) break;
+    }
+    return true;
+  }
+
+  // ESCAPED_STRING | IDENT
+  private static boolean identifier_1_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "identifier_1_1_0")) return false;
+    boolean r;
+    r = consumeToken(b, ESCAPED_STRING);
+    if (!r) r = consumeToken(b, IDENT);
     return r;
   }
 
@@ -610,9 +643,9 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   // identifier SKIP? LAMBDA SKIP? expression
   public static boolean lambdaExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "lambdaExpression")) return false;
-    if (!nextTokenIs(b, IDENT)) return false;
+    if (!nextTokenIs(b, "<lambda expression>", BACKTICK, IDENT)) return false;
     boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, LAMBDA_EXPRESSION, null);
+    Marker m = enter_section_(b, l, _NONE_, LAMBDA_EXPRESSION, "<lambda expression>");
     r = identifier(b, l + 1);
     r = r && lambdaExpression_1(b, l + 1);
     r = r && consumeToken(b, LAMBDA);
@@ -1162,7 +1195,6 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   // DOLLAR? identifier
   public static boolean referenceExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "referenceExpression")) return false;
-    if (!nextTokenIs(b, "<reference expression>", DOLLAR, IDENT)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, REFERENCE_EXPRESSION, "<reference expression>");
     r = referenceExpression_0(b, l + 1);

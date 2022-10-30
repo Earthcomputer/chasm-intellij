@@ -49,7 +49,8 @@ class ChasmSyntaxHighlighter : SyntaxHighlighterBase() {
     override fun getTokenHighlights(tokenType: IElementType?): Array<TextAttributesKey> {
         return when (tokenType) {
             ChasmTypes.IDENT,
-            ChasmTypes.DOLLAR -> IDENTIFIER_KEYS
+            ChasmTypes.DOLLAR,
+            ChasmTypes.BACKTICK -> IDENTIFIER_KEYS
             ChasmTypes.INTEGER,
             ChasmTypes.FLOAT -> NUMBER_KEYS
             ChasmTypes.UNESCAPED_STRING,

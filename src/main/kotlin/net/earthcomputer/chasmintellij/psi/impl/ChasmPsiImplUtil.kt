@@ -25,7 +25,7 @@ fun getKeyElement(entry: ChasmMapEntry): PsiElement {
 }
 
 fun getKey(entry: ChasmMapEntry): String? {
-    return entry.keyIdentifier?.text ?: entry.keyLiteral!!.value as? String
+    return entry.keyIdentifier?.value ?: entry.keyLiteral!!.value as? String
 }
 
 fun getValue(entry: ChasmMapEntry): ChasmExpression? {
@@ -42,7 +42,7 @@ fun setName(entry: ChasmMapEntry, name: String): ChasmMapEntry {
 }
 
 fun getReferenceName(reference: ChasmReferenceExpression): String {
-    return reference.referenceElement.text
+    return reference.referenceElement.value
 }
 
 fun isGlobal(reference: ChasmReferenceExpression): Boolean {
@@ -119,7 +119,7 @@ private fun handleElementRename(reference: ChasmReferenceExpression, name: Strin
 
 fun getReference(memberExpr: ChasmMemberExpression): PsiReference? {
     val memberNameElement = memberExpr.memberNameElement ?: return null
-    val memberName = memberNameElement.text
+    val memberName = memberNameElement.value
     return CachedValuesManager.getCachedValue(memberExpr) {
         CachedValueProvider.Result(object : PsiPolyVariantReferenceBase<ChasmMemberExpression>(memberExpr, memberNameElement.textRangeInParent) {
             override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> {
@@ -165,7 +165,7 @@ private fun handleElementRename(memberExpr: ChasmMemberExpression, name: String)
 }
 
 fun getArgumentName(lambda: ChasmLambdaExpression): String {
-    return lambda.argumentElement.text
+    return lambda.argumentElement.value
 }
 
 fun getName(lambda: ChasmLambdaExpression): String {
@@ -178,7 +178,7 @@ fun setName(lambda: ChasmLambdaExpression, name: String): ChasmLambdaExpression 
 }
 
 fun getMemberName(memberExpr: ChasmMemberExpression): String? {
-    return memberExpr.memberNameElement?.text
+    return memberExpr.memberNameElement?.value
 }
 
 fun getOperator(unaryExpr: ChasmUnaryExpression): IElementType {
@@ -205,5 +205,14 @@ fun getValue(literal: ChasmLiteralExpression): Any? {
         text == "null" -> null
         text.contains('.') -> text.toDoubleOrNull()
         else -> text.toLongOrNull()
+    }
+}
+
+fun getValue(identifier: ChasmIdentifier): String {
+    val text = identifier.text.trim()
+    return if (text.startsWith('`')) {
+        text.substring(1, text.length - 1).replace("\\`", "`").replace("\\\\", "\\")
+    } else {
+        text
     }
 }

@@ -1,6 +1,7 @@
 package net.earthcomputer.chasmintellij
 
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiFileFactory
 import net.earthcomputer.chasmintellij.psi.ChasmExpression
 import net.earthcomputer.chasmintellij.psi.ChasmFile
@@ -17,7 +18,12 @@ class ChasmElementFactory(private val project: Project) {
     }
 
     fun createIdentifier(name: String): ChasmIdentifier {
-        return (createExpression(name) as ChasmReferenceExpression).referenceElement
+        val text = if (StringUtil.isJavaIdentifier(name)) {
+            name
+        } else {
+            "`${name.replace("\\", "\\\\").replace("`", "\\`")}`"
+        }
+        return (createExpression(text) as ChasmReferenceExpression).referenceElement
     }
 }
 

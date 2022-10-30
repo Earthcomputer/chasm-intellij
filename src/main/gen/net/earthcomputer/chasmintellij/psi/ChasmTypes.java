@@ -33,6 +33,7 @@ public interface ChasmTypes {
   IElementType TERNARY_EXPRESSION = new ChasmElementType("TERNARY_EXPRESSION");
   IElementType UNARY_EXPRESSION = new ChasmElementType("UNARY_EXPRESSION");
 
+  IElementType BACKTICK = new ChasmTokenType("BACKTICK");
   IElementType BITWISE_AND = new ChasmTokenType("BITWISE_AND");
   IElementType BITWISE_OR = new ChasmTokenType("BITWISE_OR");
   IElementType BITWISE_XOR = new ChasmTokenType("BITWISE_XOR");

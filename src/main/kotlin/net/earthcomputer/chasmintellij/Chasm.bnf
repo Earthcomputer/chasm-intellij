@@ -202,4 +202,6 @@ recoverWhile = mapEntryRecover
 }
 private mapEntryRecover ::= !(COMMA | RBRACE | RPAREN | RBRACKET)
 
-identifier ::= IDENT
+identifier ::= IDENT | (BACKTICK (ESCAPED_STRING | IDENT)* BACKTICK) {
+methods = [getValue]
+}
