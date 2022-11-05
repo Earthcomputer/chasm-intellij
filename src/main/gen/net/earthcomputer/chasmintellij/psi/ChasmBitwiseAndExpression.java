@@ -8,6 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface ChasmBitwiseAndExpression extends ChasmExpression, ChasmBinaryExpression {
 
   @NotNull
+  List<ChasmComment> getCommentList();
+
+  @NotNull
+  List<ChasmDocComment> getDocCommentList();
+
+  @NotNull
   List<ChasmExpression> getExpressionList();
 
   @NotNull

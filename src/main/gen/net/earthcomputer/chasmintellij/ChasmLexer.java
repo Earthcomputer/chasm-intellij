@@ -26,6 +26,10 @@ class ChasmLexer implements FlexLexer {
   public static final int WAITING_CLOSE_QUOTE = 2;
   public static final int WAITING_CLOSE_SINGLE_QUOTE = 4;
   public static final int WAITING_CLOSE_BACKTICK = 6;
+  public static final int INSIDE_LINE_DOC_COMMENT = 8;
+  public static final int INSIDE_INLINE_DOC_COMMENT = 10;
+  public static final int INSIDE_LINE_COMMENT = 12;
+  public static final int INSIDE_INLINE_COMMENT = 14;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -34,7 +38,7 @@ class ChasmLexer implements FlexLexer {
    * l is of the form l = 2*k, k a non negative integer
    */
   private static final int ZZ_LEXSTATE[] = { 
-     0,  0,  1,  1,  2,  2,  3, 3
+     0,  0,  1,  1,  2,  2,  3,  3,  4,  4,  5,  5,  6,  6,  7, 7
   };
 
   /** 
@@ -56,10 +60,11 @@ class ChasmLexer implements FlexLexer {
 
   /* The ZZ_CMAP_A table has 256 entries */
   static final char ZZ_CMAP_A[] = zzUnpackCMap(
-    "\11\0\2\1\2\0\1\1\22\0\1\1\1\25\1\52\1\0\1\51\1\31\1\35\1\53\1\43\1\44\1\27"+
-    "\1\13\1\41\1\14\1\16\1\30\1\17\1\23\10\15\1\42\1\0\1\32\1\34\1\33\1\40\1\0"+
-    "\6\21\24\24\1\45\1\55\1\46\1\36\1\24\1\54\1\11\1\22\2\21\1\7\1\10\5\24\1\4"+
-    "\1\24\1\2\3\24\1\6\1\12\1\5\1\3\2\24\1\20\2\24\1\47\1\37\1\50\1\26\201\0");
+    "\11\0\1\1\1\56\2\0\1\1\22\0\1\1\1\27\1\52\1\0\1\51\1\31\1\35\1\53\1\43\1\44"+
+    "\1\3\1\15\1\41\1\16\1\20\1\2\1\21\1\25\10\17\1\42\1\0\1\32\1\34\1\33\1\40"+
+    "\1\0\6\23\24\26\1\45\1\55\1\46\1\36\1\26\1\54\1\13\1\24\2\23\1\11\1\12\5\26"+
+    "\1\6\1\26\1\4\3\26\1\10\1\14\1\7\1\5\2\26\1\22\2\26\1\47\1\37\1\50\1\30\201"+
+    "\0");
 
   /** 
    * Translates DFA states to action switch labels.
@@ -67,17 +72,19 @@ class ChasmLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\4\0\1\1\1\2\4\3\1\4\1\5\1\6\1\7"+
-    "\1\6\1\10\1\11\1\12\1\13\1\14\1\15\1\16"+
+    "\10\0\1\1\1\2\1\3\1\4\4\5\1\6\1\7"+
+    "\1\10\1\11\1\10\1\12\1\13\1\14\1\15\1\16"+
     "\1\17\1\20\1\21\1\22\1\23\1\24\1\25\1\26"+
     "\1\27\1\30\1\31\1\32\1\33\1\34\1\35\1\36"+
     "\1\37\1\40\1\41\1\40\1\42\1\43\1\42\1\44"+
-    "\1\45\1\44\3\3\1\46\3\0\1\47\1\50\1\51"+
-    "\1\52\1\53\1\54\1\55\1\56\1\57\1\60\3\3"+
-    "\1\61\2\6\1\62\1\63\1\64\2\0\1\61";
+    "\1\45\1\44\1\46\1\2\2\47\1\50\2\51\1\50"+
+    "\1\52\3\5\1\53\3\0\1\54\1\55\1\56\1\57"+
+    "\1\60\1\61\1\62\1\63\1\64\1\65\1\66\1\67"+
+    "\1\70\3\5\1\71\2\10\1\72\1\73\1\74\2\0"+
+    "\1\71";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[77];
+    int [] result = new int[93];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -102,19 +109,21 @@ class ChasmLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\56\0\134\0\212\0\270\0\346\0\u0114\0\u0142"+
-    "\0\u0170\0\u019e\0\u01cc\0\u01fa\0\u0228\0\270\0\u0256\0\u0284"+
-    "\0\270\0\270\0\270\0\270\0\u02b2\0\u02e0\0\270\0\u030e"+
-    "\0\270\0\u033c\0\270\0\270\0\270\0\270\0\270\0\270"+
-    "\0\270\0\270\0\270\0\270\0\270\0\270\0\270\0\270"+
-    "\0\270\0\u036a\0\270\0\270\0\u0398\0\270\0\270\0\u03c6"+
-    "\0\u03f4\0\u0422\0\u0450\0\270\0\u047e\0\u04ac\0\u04da\0\270"+
-    "\0\270\0\270\0\u0508\0\270\0\270\0\270\0\270\0\270"+
-    "\0\270\0\u0536\0\u0564\0\u0592\0\u05c0\0\u04ac\0\u04da\0\270"+
-    "\0\u0142\0\u0142\0\u05ee\0\u061c\0\u061c";
+    "\0\0\0\57\0\136\0\215\0\274\0\353\0\u011a\0\u0149"+
+    "\0\u0178\0\u01a7\0\u01d6\0\u0178\0\u0205\0\u0234\0\u0263\0\u0292"+
+    "\0\u02c1\0\u02f0\0\u031f\0\u0178\0\u034e\0\u037d\0\u0178\0\u0178"+
+    "\0\u03ac\0\u03db\0\u0178\0\u040a\0\u0178\0\u0439\0\u0178\0\u0178"+
+    "\0\u0178\0\u0178\0\u0178\0\u0178\0\u0178\0\u0178\0\u0178\0\u0178"+
+    "\0\u0178\0\u0178\0\u0178\0\u0178\0\u0178\0\u0468\0\u0178\0\u0178"+
+    "\0\u0497\0\u0178\0\u0178\0\u04c6\0\u0178\0\u0178\0\u0178\0\u04f5"+
+    "\0\u0178\0\u0178\0\u0524\0\u0553\0\u0582\0\u05b1\0\u05e0\0\u060f"+
+    "\0\u0178\0\u063e\0\u066d\0\u069c\0\u0178\0\u0178\0\u0178\0\u06cb"+
+    "\0\u0178\0\u0178\0\u0178\0\u0178\0\u0178\0\u0178\0\u0178\0\u0178"+
+    "\0\u0178\0\u06fa\0\u0729\0\u0758\0\u0787\0\u066d\0\u069c\0\u0178"+
+    "\0\u0234\0\u0234\0\u07b6\0\u07e5\0\u07e5";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[77];
+    int [] result = new int[93];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -137,37 +146,41 @@ class ChasmLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\5\1\6\1\7\2\10\1\11\2\10\1\12\2\10"+
-    "\1\13\1\14\1\15\1\16\1\17\3\10\1\15\1\10"+
-    "\1\20\1\21\1\22\1\23\1\24\1\25\1\26\1\27"+
-    "\1\30\1\31\1\32\1\33\1\34\1\35\1\36\1\37"+
-    "\1\40\1\41\1\42\1\43\1\44\1\45\1\46\1\47"+
-    "\1\5\52\50\1\51\2\50\1\52\53\53\1\54\1\53"+
-    "\1\55\54\56\1\57\1\60\57\0\1\6\56\0\1\10"+
-    "\1\61\7\10\2\0\1\10\1\0\6\10\33\0\11\10"+
-    "\2\0\1\10\1\0\6\10\33\0\4\10\1\62\4\10"+
-    "\2\0\1\10\1\0\6\10\33\0\7\10\1\63\1\10"+
-    "\2\0\1\10\1\0\6\10\46\0\1\15\1\0\1\15"+
-    "\3\0\1\15\47\0\1\15\1\0\1\15\3\0\1\15"+
-    "\7\0\1\64\37\0\1\15\1\65\1\15\3\0\1\15"+
-    "\47\0\1\15\1\65\1\15\1\66\1\0\1\67\1\15"+
-    "\66\0\1\70\53\0\1\71\1\0\1\72\54\0\1\73"+
-    "\1\74\56\0\1\75\57\0\1\76\70\0\1\77\2\0"+
-    "\1\77\53\0\1\100\1\0\1\100\54\0\2\101\2\0"+
-    "\2\10\1\102\6\10\2\0\1\10\1\0\6\10\33\0"+
-    "\1\10\1\103\7\10\2\0\1\10\1\0\6\10\33\0"+
-    "\2\10\1\104\6\10\2\0\1\10\1\0\6\10\46\0"+
-    "\1\105\1\0\1\105\3\0\1\105\41\0\3\106\3\0"+
-    "\1\106\1\0\1\106\1\0\3\106\51\0\1\107\3\0"+
-    "\1\107\65\0\1\110\24\0\2\10\1\111\6\10\2\0"+
-    "\1\10\1\0\6\10\33\0\5\10\1\112\3\10\2\0"+
-    "\1\10\1\0\6\10\33\0\10\10\1\103\2\0\1\10"+
-    "\1\0\6\10\40\0\1\113\5\0\1\105\1\0\1\105"+
-    "\3\0\1\105\45\0\2\114\1\115\1\0\1\115\3\0"+
-    "\1\115\47\0\1\115\1\0\1\115\3\0\1\115\32\0";
+    "\1\11\1\12\1\13\1\14\1\15\2\16\1\17\2\16"+
+    "\1\20\2\16\1\21\1\22\1\23\1\24\1\25\3\16"+
+    "\1\23\1\16\1\26\1\27\1\30\1\31\1\32\1\33"+
+    "\1\34\1\35\1\36\1\37\1\40\1\41\1\42\1\43"+
+    "\1\44\1\45\1\46\1\47\1\50\1\51\1\52\1\53"+
+    "\1\11\1\12\52\54\1\55\2\54\1\56\1\54\53\57"+
+    "\1\60\1\57\1\61\1\57\54\62\1\63\1\64\1\62"+
+    "\56\65\1\66\3\67\1\70\53\67\56\71\1\66\3\72"+
+    "\1\73\53\72\60\0\1\12\54\0\1\12\2\0\1\74"+
+    "\1\75\57\0\1\16\1\76\7\16\2\0\1\16\1\0"+
+    "\6\16\34\0\11\16\2\0\1\16\1\0\6\16\34\0"+
+    "\4\16\1\77\4\16\2\0\1\16\1\0\6\16\34\0"+
+    "\7\16\1\100\1\16\2\0\1\16\1\0\6\16\47\0"+
+    "\1\23\1\0\1\23\3\0\1\23\50\0\1\23\1\0"+
+    "\1\23\3\0\1\23\5\0\1\101\42\0\1\23\1\102"+
+    "\1\23\3\0\1\23\50\0\1\23\1\102\1\23\1\103"+
+    "\1\0\1\104\1\23\65\0\1\105\54\0\1\106\1\0"+
+    "\1\107\55\0\1\110\1\111\57\0\1\112\60\0\1\113"+
+    "\71\0\1\114\2\0\1\114\54\0\1\115\1\0\1\115"+
+    "\55\0\2\116\3\0\1\117\56\0\1\120\56\0\1\121"+
+    "\57\0\1\65\57\0\2\16\1\122\6\16\2\0\1\16"+
+    "\1\0\6\16\34\0\1\16\1\123\7\16\2\0\1\16"+
+    "\1\0\6\16\34\0\2\16\1\124\6\16\2\0\1\16"+
+    "\1\0\6\16\47\0\1\125\1\0\1\125\3\0\1\125"+
+    "\42\0\3\126\3\0\1\126\1\0\1\126\1\0\3\126"+
+    "\52\0\1\127\3\0\1\127\64\0\1\130\27\0\2\16"+
+    "\1\131\6\16\2\0\1\16\1\0\6\16\34\0\5\16"+
+    "\1\132\3\16\2\0\1\16\1\0\6\16\34\0\10\16"+
+    "\1\123\2\0\1\16\1\0\6\16\41\0\1\133\5\0"+
+    "\1\125\1\0\1\125\3\0\1\125\46\0\2\134\1\135"+
+    "\1\0\1\135\3\0\1\135\50\0\1\135\1\0\1\135"+
+    "\3\0\1\135\31\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[1610];
+    int [] result = new int[2068];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -205,13 +218,14 @@ class ChasmLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\4\0\1\11\10\1\1\11\2\1\4\11\2\1\1\11"+
-    "\1\1\1\11\1\1\17\11\1\1\2\11\1\1\2\11"+
-    "\4\1\1\11\3\0\3\11\1\1\6\11\6\1\1\11"+
-    "\2\1\2\0\1\1";
+    "\10\0\1\11\2\1\1\11\7\1\1\11\2\1\2\11"+
+    "\2\1\1\11\1\1\1\11\1\1\17\11\1\1\2\11"+
+    "\1\1\2\11\1\1\3\11\1\1\2\11\6\1\1\11"+
+    "\3\0\3\11\1\1\11\11\6\1\1\11\2\1\2\0"+
+    "\1\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[77];
+    int [] result = new int[93];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -528,262 +542,302 @@ class ChasmLexer implements FlexLexer {
             { return TokenType.BAD_CHARACTER;
             } 
             // fall through
-          case 53: break;
+          case 61: break;
           case 2: 
             { yybegin(YYINITIAL); return TokenType.WHITE_SPACE;
             } 
             // fall through
-          case 54: break;
-          case 3: 
-            { yybegin(YYINITIAL); return ChasmTypes.IDENT;
-            } 
-            // fall through
-          case 55: break;
-          case 4: 
-            { yybegin(YYINITIAL); return ChasmTypes.PLUS;
-            } 
-            // fall through
-          case 56: break;
-          case 5: 
-            { yybegin(YYINITIAL); return ChasmTypes.MINUS;
-            } 
-            // fall through
-          case 57: break;
-          case 6: 
-            { yybegin(YYINITIAL); return ChasmTypes.INTEGER;
-            } 
-            // fall through
-          case 58: break;
-          case 7: 
-            { yybegin(YYINITIAL); return ChasmTypes.DOT;
-            } 
-            // fall through
-          case 59: break;
-          case 8: 
-            { yybegin(YYINITIAL); return ChasmTypes.NOT;
-            } 
-            // fall through
-          case 60: break;
-          case 9: 
-            { yybegin(YYINITIAL); return ChasmTypes.INVERT;
-            } 
-            // fall through
-          case 61: break;
-          case 10: 
-            { yybegin(YYINITIAL); return ChasmTypes.MULTIPLY;
-            } 
-            // fall through
           case 62: break;
-          case 11: 
+          case 3: 
             { yybegin(YYINITIAL); return ChasmTypes.DIVIDE;
             } 
             // fall through
           case 63: break;
+          case 4: 
+            { yybegin(YYINITIAL); return ChasmTypes.MULTIPLY;
+            } 
+            // fall through
+          case 64: break;
+          case 5: 
+            { yybegin(YYINITIAL); return ChasmTypes.IDENT;
+            } 
+            // fall through
+          case 65: break;
+          case 6: 
+            { yybegin(YYINITIAL); return ChasmTypes.PLUS;
+            } 
+            // fall through
+          case 66: break;
+          case 7: 
+            { yybegin(YYINITIAL); return ChasmTypes.MINUS;
+            } 
+            // fall through
+          case 67: break;
+          case 8: 
+            { yybegin(YYINITIAL); return ChasmTypes.INTEGER;
+            } 
+            // fall through
+          case 68: break;
+          case 9: 
+            { yybegin(YYINITIAL); return ChasmTypes.DOT;
+            } 
+            // fall through
+          case 69: break;
+          case 10: 
+            { yybegin(YYINITIAL); return ChasmTypes.NOT;
+            } 
+            // fall through
+          case 70: break;
+          case 11: 
+            { yybegin(YYINITIAL); return ChasmTypes.INVERT;
+            } 
+            // fall through
+          case 71: break;
           case 12: 
             { yybegin(YYINITIAL); return ChasmTypes.MODULO;
             } 
             // fall through
-          case 64: break;
+          case 72: break;
           case 13: 
             { yybegin(YYINITIAL); return ChasmTypes.LESS_THAN;
             } 
             // fall through
-          case 65: break;
+          case 73: break;
           case 14: 
             { yybegin(YYINITIAL); return ChasmTypes.GREATER_THAN;
             } 
             // fall through
-          case 66: break;
+          case 74: break;
           case 15: 
             { yybegin(YYINITIAL); return ChasmTypes.EQUAL;
             } 
             // fall through
-          case 67: break;
+          case 75: break;
           case 16: 
             { yybegin(YYINITIAL); return ChasmTypes.BITWISE_AND;
             } 
             // fall through
-          case 68: break;
+          case 76: break;
           case 17: 
             { yybegin(YYINITIAL); return ChasmTypes.BITWISE_XOR;
             } 
             // fall through
-          case 69: break;
+          case 77: break;
           case 18: 
             { yybegin(YYINITIAL); return ChasmTypes.BITWISE_OR;
             } 
             // fall through
-          case 70: break;
+          case 78: break;
           case 19: 
             { yybegin(YYINITIAL); return ChasmTypes.TERNARY;
             } 
             // fall through
-          case 71: break;
+          case 79: break;
           case 20: 
             { yybegin(YYINITIAL); return ChasmTypes.COMMA;
             } 
             // fall through
-          case 72: break;
+          case 80: break;
           case 21: 
             { yybegin(YYINITIAL); return ChasmTypes.COLON;
             } 
             // fall through
-          case 73: break;
+          case 81: break;
           case 22: 
             { yybegin(YYINITIAL); return ChasmTypes.LPAREN;
             } 
             // fall through
-          case 74: break;
+          case 82: break;
           case 23: 
             { yybegin(YYINITIAL); return ChasmTypes.RPAREN;
             } 
             // fall through
-          case 75: break;
+          case 83: break;
           case 24: 
             { yybegin(YYINITIAL); return ChasmTypes.LBRACKET;
             } 
             // fall through
-          case 76: break;
+          case 84: break;
           case 25: 
             { yybegin(YYINITIAL); return ChasmTypes.RBRACKET;
             } 
             // fall through
-          case 77: break;
+          case 85: break;
           case 26: 
             { yybegin(YYINITIAL); return ChasmTypes.LBRACE;
             } 
             // fall through
-          case 78: break;
+          case 86: break;
           case 27: 
             { yybegin(YYINITIAL); return ChasmTypes.RBRACE;
             } 
             // fall through
-          case 79: break;
+          case 87: break;
           case 28: 
             { yybegin(YYINITIAL); return ChasmTypes.DOLLAR;
             } 
             // fall through
-          case 80: break;
+          case 88: break;
           case 29: 
             { yybegin(WAITING_CLOSE_QUOTE); return ChasmTypes.QUOTE;
             } 
             // fall through
-          case 81: break;
+          case 89: break;
           case 30: 
             { yybegin(WAITING_CLOSE_SINGLE_QUOTE); return ChasmTypes.SINGLE_QUOTE;
             } 
             // fall through
-          case 82: break;
+          case 90: break;
           case 31: 
             { yybegin(WAITING_CLOSE_BACKTICK); return ChasmTypes.BACKTICK;
             } 
             // fall through
-          case 83: break;
+          case 91: break;
           case 32: 
             { yybegin(WAITING_CLOSE_QUOTE); return ChasmTypes.UNESCAPED_STRING;
             } 
             // fall through
-          case 84: break;
+          case 92: break;
           case 33: 
             { yybegin(YYINITIAL); return ChasmTypes.QUOTE;
             } 
             // fall through
-          case 85: break;
+          case 93: break;
           case 34: 
             { yybegin(WAITING_CLOSE_SINGLE_QUOTE); return ChasmTypes.UNESCAPED_STRING;
             } 
             // fall through
-          case 86: break;
+          case 94: break;
           case 35: 
             { yybegin(YYINITIAL); return ChasmTypes.SINGLE_QUOTE;
             } 
             // fall through
-          case 87: break;
+          case 95: break;
           case 36: 
             { yybegin(WAITING_CLOSE_BACKTICK); return ChasmTypes.IDENT;
             } 
             // fall through
-          case 88: break;
+          case 96: break;
           case 37: 
             { yybegin(YYINITIAL); return ChasmTypes.BACKTICK;
             } 
             // fall through
-          case 89: break;
-          case 38: 
-            { yybegin(YYINITIAL); return ChasmTypes.LAMBDA;
-            } 
-            // fall through
-          case 90: break;
-          case 39: 
-            { yybegin(YYINITIAL); return ChasmTypes.NOT_EQUAL;
-            } 
-            // fall through
-          case 91: break;
-          case 40: 
-            { yybegin(YYINITIAL); return ChasmTypes.SHIFT_LEFT;
-            } 
-            // fall through
-          case 92: break;
-          case 41: 
-            { yybegin(YYINITIAL); return ChasmTypes.LESS_THAN_EQUAL;
-            } 
-            // fall through
-          case 93: break;
-          case 42: 
-            { yybegin(YYINITIAL); return ChasmTypes.SHIFT_RIGHT;
-            } 
-            // fall through
-          case 94: break;
-          case 43: 
-            { yybegin(YYINITIAL); return ChasmTypes.GREATER_THAN_EQUAL;
-            } 
-            // fall through
-          case 95: break;
-          case 44: 
-            { yybegin(YYINITIAL); return ChasmTypes.BOOL_AND;
-            } 
-            // fall through
-          case 96: break;
-          case 45: 
-            { yybegin(YYINITIAL); return ChasmTypes.BOOL_OR;
-            } 
-            // fall through
           case 97: break;
-          case 46: 
-            { yybegin(WAITING_CLOSE_QUOTE); return ChasmTypes.ESCAPED_STRING;
+          case 38: 
+            { yybegin(INSIDE_LINE_DOC_COMMENT); return ChasmTypes.DOC_COMMENT;
             } 
             // fall through
           case 98: break;
-          case 47: 
-            { yybegin(WAITING_CLOSE_SINGLE_QUOTE); return ChasmTypes.ESCAPED_STRING;
+          case 39: 
+            { yybegin(INSIDE_INLINE_DOC_COMMENT); return ChasmTypes.DOC_COMMENT;
             } 
             // fall through
           case 99: break;
-          case 48: 
-            { yybegin(WAITING_CLOSE_BACKTICK); return ChasmTypes.ESCAPED_STRING;
+          case 40: 
+            { yybegin(INSIDE_LINE_COMMENT); return ChasmTypes.LINE_COMMENT;
             } 
             // fall through
           case 100: break;
-          case 49: 
-            { yybegin(YYINITIAL); return ChasmTypes.FLOAT;
+          case 41: 
+            { yybegin(INSIDE_INLINE_COMMENT); return ChasmTypes.INLINE_COMMENT;
             } 
             // fall through
           case 101: break;
-          case 50: 
-            { yybegin(YYINITIAL); return ChasmTypes.SHIFT_RIGHT_UNSIGNED;
+          case 42: 
+            { yybegin(INSIDE_INLINE_COMMENT); return ChasmTypes.COMMENT_INLINE_START;
             } 
             // fall through
           case 102: break;
-          case 51: 
-            { yybegin(YYINITIAL); return ChasmTypes.NULL;
+          case 43: 
+            { yybegin(YYINITIAL); return ChasmTypes.LAMBDA;
             } 
             // fall through
           case 103: break;
-          case 52: 
-            { yybegin(YYINITIAL); return ChasmTypes.BOOL;
+          case 44: 
+            { yybegin(YYINITIAL); return ChasmTypes.NOT_EQUAL;
             } 
             // fall through
           case 104: break;
+          case 45: 
+            { yybegin(YYINITIAL); return ChasmTypes.SHIFT_LEFT;
+            } 
+            // fall through
+          case 105: break;
+          case 46: 
+            { yybegin(YYINITIAL); return ChasmTypes.LESS_THAN_EQUAL;
+            } 
+            // fall through
+          case 106: break;
+          case 47: 
+            { yybegin(YYINITIAL); return ChasmTypes.SHIFT_RIGHT;
+            } 
+            // fall through
+          case 107: break;
+          case 48: 
+            { yybegin(YYINITIAL); return ChasmTypes.GREATER_THAN_EQUAL;
+            } 
+            // fall through
+          case 108: break;
+          case 49: 
+            { yybegin(YYINITIAL); return ChasmTypes.BOOL_AND;
+            } 
+            // fall through
+          case 109: break;
+          case 50: 
+            { yybegin(YYINITIAL); return ChasmTypes.BOOL_OR;
+            } 
+            // fall through
+          case 110: break;
+          case 51: 
+            { yybegin(WAITING_CLOSE_QUOTE); return ChasmTypes.ESCAPED_STRING;
+            } 
+            // fall through
+          case 111: break;
+          case 52: 
+            { yybegin(WAITING_CLOSE_SINGLE_QUOTE); return ChasmTypes.ESCAPED_STRING;
+            } 
+            // fall through
+          case 112: break;
+          case 53: 
+            { yybegin(WAITING_CLOSE_BACKTICK); return ChasmTypes.ESCAPED_STRING;
+            } 
+            // fall through
+          case 113: break;
+          case 54: 
+            { yybegin(YYINITIAL); return ChasmTypes.DOC_COMMENT_INLINE_END;
+            } 
+            // fall through
+          case 114: break;
+          case 55: 
+            { yybegin(YYINITIAL); return ChasmTypes.COMMENT_INLINE_END;
+            } 
+            // fall through
+          case 115: break;
+          case 56: 
+            { yybegin(INSIDE_INLINE_DOC_COMMENT); return ChasmTypes.DOC_COMMENT_INLINE_START;
+            } 
+            // fall through
+          case 116: break;
+          case 57: 
+            { yybegin(YYINITIAL); return ChasmTypes.FLOAT;
+            } 
+            // fall through
+          case 117: break;
+          case 58: 
+            { yybegin(YYINITIAL); return ChasmTypes.SHIFT_RIGHT_UNSIGNED;
+            } 
+            // fall through
+          case 118: break;
+          case 59: 
+            { yybegin(YYINITIAL); return ChasmTypes.NULL;
+            } 
+            // fall through
+          case 119: break;
+          case 60: 
+            { yybegin(YYINITIAL); return ChasmTypes.BOOL;
+            } 
+            // fall through
+          case 120: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

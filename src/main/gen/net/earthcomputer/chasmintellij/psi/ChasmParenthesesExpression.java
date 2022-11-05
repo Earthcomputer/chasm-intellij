@@ -7,6 +7,12 @@ import com.intellij.psi.PsiElement;
 
 public interface ChasmParenthesesExpression extends ChasmExpression {
 
+  @NotNull
+  List<ChasmComment> getCommentList();
+
+  @NotNull
+  List<ChasmDocComment> getDocCommentList();
+
   @Nullable
   ChasmExpression getExpression();
 

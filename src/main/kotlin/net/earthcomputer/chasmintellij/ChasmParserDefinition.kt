@@ -12,6 +12,7 @@ import net.earthcomputer.chasmintellij.psi.ChasmTypes
 
 class ChasmParserDefinition : ParserDefinition {
     companion object {
+        private val COMMENTS = TokenSet.create(ChasmTypes.LINE_COMMENT, ChasmTypes.INLINE_COMMENT, ChasmTypes.COMMENT_INLINE_START, ChasmTypes.COMMENT_INLINE_END, ChasmTypes.DOC_COMMENT, ChasmTypes.DOC_COMMENT_INLINE_START, ChasmTypes.DOC_COMMENT_INLINE_END)
         private val STRING_LITERALS = TokenSet.create(ChasmTypes.UNESCAPED_STRING, ChasmTypes.ESCAPED_STRING)
         val FILE = IFileElementType(ChasmLanguage)
     }
@@ -22,7 +23,7 @@ class ChasmParserDefinition : ParserDefinition {
 
     override fun getFileNodeType() = FILE
 
-    override fun getCommentTokens(): TokenSet = TokenSet.EMPTY
+    override fun getCommentTokens() = COMMENTS
 
     override fun getStringLiteralElements() = STRING_LITERALS
 

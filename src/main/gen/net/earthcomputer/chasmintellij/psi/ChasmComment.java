@@ -4,16 +4,12 @@ package net.earthcomputer.chasmintellij.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiComment;
+import com.intellij.psi.tree.IElementType;
 
-public interface ChasmMapExpression extends ChasmExpression {
-
-  @NotNull
-  List<ChasmComment> getCommentList();
-
-  @NotNull
-  List<ChasmDocComment> getDocCommentList();
+public interface ChasmComment extends PsiComment {
 
   @NotNull
-  List<ChasmMapEntry> getMapEntryList();
+  IElementType getTokenType();
 
 }

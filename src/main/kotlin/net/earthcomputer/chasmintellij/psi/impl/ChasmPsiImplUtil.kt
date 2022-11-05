@@ -216,3 +216,20 @@ fun getValue(identifier: ChasmIdentifier): String {
         text
     }
 }
+
+fun getTokenType(comment: ChasmComment): IElementType {
+    return if (comment.firstChild.textContains('*')) {
+        ChasmTypes.INLINE_COMMENT
+    } else {
+        ChasmTypes.LINE_COMMENT
+    }
+}
+
+fun getTokenType(@Suppress("UNUSED_PARAMETER") comment: ChasmDocComment): IElementType {
+    return ChasmTypes.DOC_COMMENT
+}
+
+fun getOwner(@Suppress("UNUSED_PARAMETER") comment: ChasmDocComment): PsiElement? {
+    // TODO: find the owner when/if the chasm spec defines doc comments
+    return null;
+}

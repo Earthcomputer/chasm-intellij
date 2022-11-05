@@ -19,6 +19,8 @@
         <langCodeStyleSettingsProvider implementation="net.earthcomputer.chasmintellij.formatter.ChasmLanguageCodeStyleSettingsProvider"/>
         <lang.braceMatcher language="Chasm"
                            implementationClass="net.earthcomputer.chasmintellij.ChasmPairedBraceMatcher"/>
+        <lang.commenter language="Chasm"
+                        implementationClass="net.earthcomputer.chasmintellij.ChasmCommenter"/>
         <lang.formatter language="Chasm"
                         implementationClass="net.earthcomputer.chasmintellij.formatter.ChasmFormattingModelBuilder"/>
         <lang.parserDefinition language="Chasm"

@@ -29,6 +29,18 @@ public class ChasmMapExpressionImpl extends ChasmExpressionImpl implements Chasm
 
   @Override
   @NotNull
+  public List<ChasmComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ChasmComment.class);
+  }
+
+  @Override
+  @NotNull
+  public List<ChasmDocComment> getDocCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ChasmDocComment.class);
+  }
+
+  @Override
+  @NotNull
   public List<ChasmMapEntry> getMapEntryList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, ChasmMapEntry.class);
   }

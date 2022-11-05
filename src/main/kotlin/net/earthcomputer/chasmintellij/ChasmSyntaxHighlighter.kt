@@ -11,6 +11,9 @@ import net.earthcomputer.chasmintellij.psi.ChasmTypes
 
 class ChasmSyntaxHighlighter : SyntaxHighlighterBase() {
     companion object {
+        val LINE_COMMENT = createTextAttributesKey("CHASM_LINE_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT)
+        val INLINE_COMMENT = createTextAttributesKey("CHASM_INLINE_COMMENT", DefaultLanguageHighlighterColors.BLOCK_COMMENT)
+        val DOC_COMMENT = createTextAttributesKey("CHASM_DOC_COMMENT", DefaultLanguageHighlighterColors.DOC_COMMENT)
         val IDENTIFIER = createTextAttributesKey("CHASM_IDENTIFIER", DefaultLanguageHighlighterColors.IDENTIFIER)
         val NUMBER = createTextAttributesKey("CHASM_NUMBER", DefaultLanguageHighlighterColors.NUMBER)
         val STRING = createTextAttributesKey("CHASM_STRING", DefaultLanguageHighlighterColors.STRING)
@@ -29,6 +32,9 @@ class ChasmSyntaxHighlighter : SyntaxHighlighterBase() {
         val PARAMETER = createTextAttributesKey("CHASM_PARAMETER", DefaultLanguageHighlighterColors.PARAMETER)
         val BAD_CHARACTER = createTextAttributesKey("CHASM_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER)
 
+        val LINE_COMMENT_KEYS = arrayOf(LINE_COMMENT)
+        val INLINE_COMMENT_KEYS = arrayOf(INLINE_COMMENT)
+        val DOC_COMMENT_KEYS = arrayOf(DOC_COMMENT)
         val IDENTIFIER_KEYS = arrayOf(IDENTIFIER)
         val NUMBER_KEYS = arrayOf(NUMBER)
         val STRING_KEYS = arrayOf(STRING)
@@ -48,6 +54,13 @@ class ChasmSyntaxHighlighter : SyntaxHighlighterBase() {
 
     override fun getTokenHighlights(tokenType: IElementType?): Array<TextAttributesKey> {
         return when (tokenType) {
+            ChasmTypes.LINE_COMMENT -> LINE_COMMENT_KEYS
+            ChasmTypes.INLINE_COMMENT,
+            ChasmTypes.COMMENT_INLINE_START,
+            ChasmTypes.COMMENT_INLINE_END -> INLINE_COMMENT_KEYS
+            ChasmTypes.DOC_COMMENT,
+            ChasmTypes.DOC_COMMENT_INLINE_START,
+            ChasmTypes.DOC_COMMENT_INLINE_END -> DOC_COMMENT_KEYS
             ChasmTypes.IDENT,
             ChasmTypes.DOLLAR,
             ChasmTypes.BACKTICK -> IDENTIFIER_KEYS

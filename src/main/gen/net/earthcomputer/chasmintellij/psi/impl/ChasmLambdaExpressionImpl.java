@@ -29,6 +29,18 @@ public class ChasmLambdaExpressionImpl extends ChasmExpressionImpl implements Ch
 
   @Override
   @NotNull
+  public List<ChasmComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ChasmComment.class);
+  }
+
+  @Override
+  @NotNull
+  public List<ChasmDocComment> getDocCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ChasmDocComment.class);
+  }
+
+  @Override
+  @NotNull
   public ChasmIdentifier getArgumentElement() {
     return findNotNullChildByClass(ChasmIdentifier.class);
   }

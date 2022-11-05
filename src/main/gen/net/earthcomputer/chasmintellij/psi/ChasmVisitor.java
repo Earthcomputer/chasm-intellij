@@ -4,7 +4,9 @@ package net.earthcomputer.chasmintellij.psi;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiDocCommentBase;
 import com.intellij.psi.PsiNameIdentifierOwner;
+import com.intellij.psi.PsiComment;
 import com.intellij.psi.ContributedReferenceHost;
 
 public class ChasmVisitor extends PsiElementVisitor {
@@ -41,6 +43,14 @@ public class ChasmVisitor extends PsiElementVisitor {
 
   public void visitCallExpression(@NotNull ChasmCallExpression o) {
     visitExpression(o);
+  }
+
+  public void visitComment(@NotNull ChasmComment o) {
+    visitPsiComment(o);
+  }
+
+  public void visitDocComment(@NotNull ChasmDocComment o) {
+    visitPsiDocCommentBase(o);
   }
 
   public void visitEqualityExpression(@NotNull ChasmEqualityExpression o) {
@@ -115,6 +125,14 @@ public class ChasmVisitor extends PsiElementVisitor {
 
   public void visitUnaryExpression(@NotNull ChasmUnaryExpression o) {
     visitExpression(o);
+  }
+
+  public void visitPsiComment(@NotNull PsiComment o) {
+    visitElement(o);
+  }
+
+  public void visitPsiDocCommentBase(@NotNull PsiDocCommentBase o) {
+    visitElement(o);
   }
 
   public void visitPsiNameIdentifierOwner(@NotNull PsiNameIdentifierOwner o) {

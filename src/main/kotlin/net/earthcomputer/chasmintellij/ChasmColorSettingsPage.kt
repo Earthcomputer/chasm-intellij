@@ -14,6 +14,9 @@ class ChasmColorSettingsPage : ColorSettingsPage {
         )
 
         private val DESCRIPTORS = arrayOf(
+            AttributesDescriptor("Line comment", ChasmSyntaxHighlighter.LINE_COMMENT),
+            AttributesDescriptor("Block comment", ChasmSyntaxHighlighter.INLINE_COMMENT),
+            AttributesDescriptor("Doc comment", ChasmSyntaxHighlighter.DOC_COMMENT),
             AttributesDescriptor("Identifier", ChasmSyntaxHighlighter.IDENTIFIER),
             AttributesDescriptor("Number", ChasmSyntaxHighlighter.NUMBER),
             AttributesDescriptor("String", ChasmSyntaxHighlighter.STRING),
@@ -46,8 +49,11 @@ class ChasmColorSettingsPage : ColorSettingsPage {
 
     override fun getDemoText() = """
         {
+            // This is a line comment
             <key>identifier</key>: hello,
+            /* This is a block comment */
             <key>number</key>: 123.45,
+            /** This is a doc comment */
             <key>string</key>: "hello world \"",
             <key>keyword</key>: null,
             <key>operator</key>: 1 + 2,

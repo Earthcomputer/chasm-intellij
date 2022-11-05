@@ -9,6 +9,12 @@ import com.intellij.psi.PsiNameIdentifierOwner;
 public interface ChasmLambdaExpression extends ChasmExpression, PsiNameIdentifierOwner {
 
   @NotNull
+  List<ChasmComment> getCommentList();
+
+  @NotNull
+  List<ChasmDocComment> getDocCommentList();
+
+  @NotNull
   ChasmIdentifier getArgumentElement();
 
   @NotNull

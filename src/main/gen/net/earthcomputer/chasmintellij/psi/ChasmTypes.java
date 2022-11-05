@@ -15,6 +15,8 @@ public interface ChasmTypes {
   IElementType BOOLEAN_AND_EXPRESSION = new ChasmElementType("BOOLEAN_AND_EXPRESSION");
   IElementType BOOLEAN_OR_EXPRESSION = new ChasmElementType("BOOLEAN_OR_EXPRESSION");
   IElementType CALL_EXPRESSION = new ChasmElementType("CALL_EXPRESSION");
+  IElementType COMMENT = new ChasmElementType("COMMENT");
+  IElementType DOC_COMMENT_ELEMENT = new ChasmElementType("DOC_COMMENT_ELEMENT");
   IElementType EQUALITY_EXPRESSION = new ChasmElementType("EQUALITY_EXPRESSION");
   IElementType EXPRESSION = new ChasmElementType("EXPRESSION");
   IElementType IDENTIFIER = new ChasmElementType("IDENTIFIER");
@@ -42,7 +44,12 @@ public interface ChasmTypes {
   IElementType BOOL_OR = new ChasmTokenType("BOOL_OR");
   IElementType COLON = new ChasmTokenType("COLON");
   IElementType COMMA = new ChasmTokenType("COMMA");
+  IElementType COMMENT_INLINE_END = new ChasmTokenType("COMMENT_INLINE_END");
+  IElementType COMMENT_INLINE_START = new ChasmTokenType("COMMENT_INLINE_START");
   IElementType DIVIDE = new ChasmTokenType("DIVIDE");
+  IElementType DOC_COMMENT = new ChasmTokenType("DOC_COMMENT");
+  IElementType DOC_COMMENT_INLINE_END = new ChasmTokenType("DOC_COMMENT_INLINE_END");
+  IElementType DOC_COMMENT_INLINE_START = new ChasmTokenType("DOC_COMMENT_INLINE_START");
   IElementType DOLLAR = new ChasmTokenType("DOLLAR");
   IElementType DOT = new ChasmTokenType("DOT");
   IElementType EQUAL = new ChasmTokenType("EQUAL");
@@ -51,6 +58,7 @@ public interface ChasmTypes {
   IElementType GREATER_THAN = new ChasmTokenType("GREATER_THAN");
   IElementType GREATER_THAN_EQUAL = new ChasmTokenType("GREATER_THAN_EQUAL");
   IElementType IDENT = new ChasmTokenType("IDENT");
+  IElementType INLINE_COMMENT = new ChasmTokenType("INLINE_COMMENT");
   IElementType INTEGER = new ChasmTokenType("INTEGER");
   IElementType INVERT = new ChasmTokenType("INVERT");
   IElementType LAMBDA = new ChasmTokenType("LAMBDA");
@@ -58,6 +66,7 @@ public interface ChasmTypes {
   IElementType LBRACKET = new ChasmTokenType("LBRACKET");
   IElementType LESS_THAN = new ChasmTokenType("LESS_THAN");
   IElementType LESS_THAN_EQUAL = new ChasmTokenType("LESS_THAN_EQUAL");
+  IElementType LINE_COMMENT = new ChasmTokenType("LINE_COMMENT");
   IElementType LPAREN = new ChasmTokenType("LPAREN");
   IElementType MINUS = new ChasmTokenType("MINUS");
   IElementType MODULO = new ChasmTokenType("MODULO");
@@ -101,6 +110,12 @@ public interface ChasmTypes {
       }
       else if (type == CALL_EXPRESSION) {
         return new ChasmCallExpressionImpl(node);
+      }
+      else if (type == COMMENT) {
+        return new ChasmCommentImpl(node);
+      }
+      else if (type == DOC_COMMENT_ELEMENT) {
+        return new ChasmDocCommentImpl(node);
       }
       else if (type == EQUALITY_EXPRESSION) {
         return new ChasmEqualityExpressionImpl(node);

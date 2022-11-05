@@ -45,25 +45,18 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   };
 
   /* ********************************************************** */
-  // SKIP? (PLUS | MINUS) SKIP? additivePrecedence
+  // skip (PLUS | MINUS) skip additivePrecedence
   public static boolean additiveExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "additiveExpression")) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _LEFT_, ADDITIVE_EXPRESSION, "<additive expression>");
-    r = additiveExpression_0(b, l + 1);
+    r = skip(b, l + 1);
     r = r && additiveExpression_1(b, l + 1);
     p = r; // pin = 2
-    r = r && report_error_(b, additiveExpression_2(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && additivePrecedence(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
-  }
-
-  // SKIP?
-  private static boolean additiveExpression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "additiveExpression_0")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   // PLUS | MINUS
@@ -73,13 +66,6 @@ public class ChasmParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, PLUS);
     if (!r) r = consumeToken(b, MINUS);
     return r;
-  }
-
-  // SKIP?
-  private static boolean additiveExpression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "additiveExpression_2")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   /* ********************************************************** */
@@ -143,33 +129,18 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SKIP? BITWISE_AND SKIP? bitwiseAndPrecedence
+  // skip BITWISE_AND skip bitwiseAndPrecedence
   public static boolean bitwiseAndExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "bitwiseAndExpression")) return false;
-    if (!nextTokenIs(b, "<bitwise and expression>", BITWISE_AND, SKIP)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _LEFT_, BITWISE_AND_EXPRESSION, "<bitwise and expression>");
-    r = bitwiseAndExpression_0(b, l + 1);
+    r = skip(b, l + 1);
     r = r && consumeToken(b, BITWISE_AND);
     p = r; // pin = 2
-    r = r && report_error_(b, bitwiseAndExpression_2(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && bitwiseAndPrecedence(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
-  }
-
-  // SKIP?
-  private static boolean bitwiseAndExpression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "bitwiseAndExpression_0")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean bitwiseAndExpression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "bitwiseAndExpression_2")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   /* ********************************************************** */
@@ -192,33 +163,18 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SKIP? BITWISE_OR SKIP? bitwiseOrPrecedence
+  // skip BITWISE_OR skip bitwiseOrPrecedence
   public static boolean bitwiseOrExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "bitwiseOrExpression")) return false;
-    if (!nextTokenIs(b, "<bitwise or expression>", BITWISE_OR, SKIP)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _LEFT_, BITWISE_OR_EXPRESSION, "<bitwise or expression>");
-    r = bitwiseOrExpression_0(b, l + 1);
+    r = skip(b, l + 1);
     r = r && consumeToken(b, BITWISE_OR);
     p = r; // pin = 2
-    r = r && report_error_(b, bitwiseOrExpression_2(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && bitwiseOrPrecedence(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
-  }
-
-  // SKIP?
-  private static boolean bitwiseOrExpression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "bitwiseOrExpression_0")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean bitwiseOrExpression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "bitwiseOrExpression_2")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   /* ********************************************************** */
@@ -241,33 +197,18 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SKIP? BITWISE_XOR SKIP? bitwiseXorPrecedence
+  // skip BITWISE_XOR skip bitwiseXorPrecedence
   public static boolean bitwiseXorExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "bitwiseXorExpression")) return false;
-    if (!nextTokenIs(b, "<bitwise xor expression>", BITWISE_XOR, SKIP)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _LEFT_, BITWISE_XOR_EXPRESSION, "<bitwise xor expression>");
-    r = bitwiseXorExpression_0(b, l + 1);
+    r = skip(b, l + 1);
     r = r && consumeToken(b, BITWISE_XOR);
     p = r; // pin = 2
-    r = r && report_error_(b, bitwiseXorExpression_2(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && bitwiseXorPrecedence(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
-  }
-
-  // SKIP?
-  private static boolean bitwiseXorExpression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "bitwiseXorExpression_0")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean bitwiseXorExpression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "bitwiseXorExpression_2")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   /* ********************************************************** */
@@ -290,33 +231,18 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SKIP? BOOL_AND SKIP? booleanAndPrecedence
+  // skip BOOL_AND skip booleanAndPrecedence
   public static boolean booleanAndExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "booleanAndExpression")) return false;
-    if (!nextTokenIs(b, "<boolean and expression>", BOOL_AND, SKIP)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _LEFT_, BOOLEAN_AND_EXPRESSION, "<boolean and expression>");
-    r = booleanAndExpression_0(b, l + 1);
+    r = skip(b, l + 1);
     r = r && consumeToken(b, BOOL_AND);
     p = r; // pin = 2
-    r = r && report_error_(b, booleanAndExpression_2(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && booleanAndPrecedence(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
-  }
-
-  // SKIP?
-  private static boolean booleanAndExpression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "booleanAndExpression_0")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean booleanAndExpression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "booleanAndExpression_2")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   /* ********************************************************** */
@@ -339,33 +265,18 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SKIP? BOOL_OR SKIP? booleanOrPrecedence
+  // skip BOOL_OR skip booleanOrPrecedence
   public static boolean booleanOrExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "booleanOrExpression")) return false;
-    if (!nextTokenIs(b, "<boolean or expression>", BOOL_OR, SKIP)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _LEFT_, BOOLEAN_OR_EXPRESSION, "<boolean or expression>");
-    r = booleanOrExpression_0(b, l + 1);
+    r = skip(b, l + 1);
     r = r && consumeToken(b, BOOL_OR);
     p = r; // pin = 2
-    r = r && report_error_(b, booleanOrExpression_2(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && booleanOrPrecedence(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
-  }
-
-  // SKIP?
-  private static boolean booleanOrExpression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "booleanOrExpression_0")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean booleanOrExpression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "booleanOrExpression_2")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   /* ********************************************************** */
@@ -420,92 +331,151 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SKIP? LPAREN SKIP? bracketsBody SKIP? RPAREN
+  // skip LPAREN skip bracketsBody skip RPAREN
   public static boolean callExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "callExpression")) return false;
-    if (!nextTokenIs(b, "<call expression>", LPAREN, SKIP)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _LEFT_, CALL_EXPRESSION, "<call expression>");
-    r = callExpression_0(b, l + 1);
+    r = skip(b, l + 1);
     r = r && consumeToken(b, LPAREN);
     p = r; // pin = 2
-    r = r && report_error_(b, callExpression_2(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && report_error_(b, bracketsBody(b, l + 1)) && r;
-    r = p && report_error_(b, callExpression_4(b, l + 1)) && r;
+    r = p && report_error_(b, skip(b, l + 1)) && r;
     r = p && consumeToken(b, RPAREN) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
 
-  // SKIP?
-  private static boolean callExpression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "callExpression_0")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean callExpression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "callExpression_2")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean callExpression_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "callExpression_4")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
   /* ********************************************************** */
-  // SKIP? expression SKIP? <<eof>>
+  // skip expression skip <<eof>>
   static boolean chasmFile(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "chasmFile")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = chasmFile_0(b, l + 1);
+    r = skip(b, l + 1);
     r = r && expression(b, l + 1);
-    r = r && chasmFile_2(b, l + 1);
+    r = r && skip(b, l + 1);
     r = r && eof(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // SKIP?
-  private static boolean chasmFile_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "chasmFile_0")) return false;
-    consumeToken(b, SKIP);
-    return true;
+  /* ********************************************************** */
+  // LINE_COMMENT+ | (COMMENT_INLINE_START INLINE_COMMENT* COMMENT_INLINE_END )
+  public static boolean comment(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "comment")) return false;
+    if (!nextTokenIs(b, "<comment>", COMMENT_INLINE_START, LINE_COMMENT)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, COMMENT, "<comment>");
+    r = comment_0(b, l + 1);
+    if (!r) r = comment_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
   }
 
-  // SKIP?
-  private static boolean chasmFile_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "chasmFile_2")) return false;
-    consumeToken(b, SKIP);
+  // LINE_COMMENT+
+  private static boolean comment_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "comment_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LINE_COMMENT);
+    while (r) {
+      int c = current_position_(b);
+      if (!consumeToken(b, LINE_COMMENT)) break;
+      if (!empty_element_parsed_guard_(b, "comment_0", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // COMMENT_INLINE_START INLINE_COMMENT* COMMENT_INLINE_END
+  private static boolean comment_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "comment_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMENT_INLINE_START);
+    r = r && comment_1_1(b, l + 1);
+    r = r && consumeToken(b, COMMENT_INLINE_END);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // INLINE_COMMENT*
+  private static boolean comment_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "comment_1_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!consumeToken(b, INLINE_COMMENT)) break;
+      if (!empty_element_parsed_guard_(b, "comment_1_1", c)) break;
+    }
     return true;
   }
 
   /* ********************************************************** */
-  // SKIP? (EQUAL | NOT_EQUAL) SKIP? equalityPrecedence
+  // DOC_COMMENT+ | (DOC_COMMENT_INLINE_START DOC_COMMENT* DOC_COMMENT_INLINE_END)
+  public static boolean docComment(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "docComment")) return false;
+    if (!nextTokenIs(b, "<doc comment>", DOC_COMMENT, DOC_COMMENT_INLINE_START)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, DOC_COMMENT_ELEMENT, "<doc comment>");
+    r = docComment_0(b, l + 1);
+    if (!r) r = docComment_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // DOC_COMMENT+
+  private static boolean docComment_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "docComment_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, DOC_COMMENT);
+    while (r) {
+      int c = current_position_(b);
+      if (!consumeToken(b, DOC_COMMENT)) break;
+      if (!empty_element_parsed_guard_(b, "docComment_0", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // DOC_COMMENT_INLINE_START DOC_COMMENT* DOC_COMMENT_INLINE_END
+  private static boolean docComment_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "docComment_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, DOC_COMMENT_INLINE_START);
+    r = r && docComment_1_1(b, l + 1);
+    r = r && consumeToken(b, DOC_COMMENT_INLINE_END);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // DOC_COMMENT*
+  private static boolean docComment_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "docComment_1_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!consumeToken(b, DOC_COMMENT)) break;
+      if (!empty_element_parsed_guard_(b, "docComment_1_1", c)) break;
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // skip (EQUAL | NOT_EQUAL) skip equalityPrecedence
   public static boolean equalityExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "equalityExpression")) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _LEFT_, EQUALITY_EXPRESSION, "<equality expression>");
-    r = equalityExpression_0(b, l + 1);
+    r = skip(b, l + 1);
     r = r && equalityExpression_1(b, l + 1);
     p = r; // pin = 2
-    r = r && report_error_(b, equalityExpression_2(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && equalityPrecedence(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
-  }
-
-  // SKIP?
-  private static boolean equalityExpression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "equalityExpression_0")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   // EQUAL | NOT_EQUAL
@@ -515,13 +485,6 @@ public class ChasmParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, EQUAL);
     if (!r) r = consumeToken(b, NOT_EQUAL);
     return r;
-  }
-
-  // SKIP?
-  private static boolean equalityExpression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "equalityExpression_2")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   /* ********************************************************** */
@@ -601,73 +564,37 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SKIP? LBRACKET SKIP? bracketsBody SKIP? RBRACKET
+  // skip LBRACKET skip bracketsBody skip RBRACKET
   public static boolean indexExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "indexExpression")) return false;
-    if (!nextTokenIs(b, "<index expression>", LBRACKET, SKIP)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _LEFT_, INDEX_EXPRESSION, "<index expression>");
-    r = indexExpression_0(b, l + 1);
+    r = skip(b, l + 1);
     r = r && consumeToken(b, LBRACKET);
     p = r; // pin = 2
-    r = r && report_error_(b, indexExpression_2(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && report_error_(b, bracketsBody(b, l + 1)) && r;
-    r = p && report_error_(b, indexExpression_4(b, l + 1)) && r;
+    r = p && report_error_(b, skip(b, l + 1)) && r;
     r = p && consumeToken(b, RBRACKET) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
 
-  // SKIP?
-  private static boolean indexExpression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "indexExpression_0")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean indexExpression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "indexExpression_2")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean indexExpression_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "indexExpression_4")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
   /* ********************************************************** */
-  // identifier SKIP? LAMBDA SKIP? expression
+  // identifier skip LAMBDA skip expression
   public static boolean lambdaExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "lambdaExpression")) return false;
     if (!nextTokenIs(b, "<lambda expression>", BACKTICK, IDENT)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, LAMBDA_EXPRESSION, "<lambda expression>");
     r = identifier(b, l + 1);
-    r = r && lambdaExpression_1(b, l + 1);
+    r = r && skip(b, l + 1);
     r = r && consumeToken(b, LAMBDA);
     p = r; // pin = 3
-    r = r && report_error_(b, lambdaExpression_3(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && expression(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
-  }
-
-  // SKIP?
-  private static boolean lambdaExpression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "lambdaExpression_1")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean lambdaExpression_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "lambdaExpression_3")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   /* ********************************************************** */
@@ -704,7 +631,7 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LBRACKET SKIP? (listBracketsBody (SKIP? COMMA SKIP? listBracketsBody)* SKIP? (COMMA SKIP?)?)? RBRACKET
+  // LBRACKET skip (listBracketsBody (skip COMMA skip listBracketsBody)* skip (COMMA skip)?)? RBRACKET
   public static boolean listExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "listExpression")) return false;
     if (!nextTokenIs(b, LBRACKET)) return false;
@@ -712,41 +639,34 @@ public class ChasmParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, LIST_EXPRESSION, null);
     r = consumeToken(b, LBRACKET);
     p = r; // pin = 1
-    r = r && report_error_(b, listExpression_1(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && report_error_(b, listExpression_2(b, l + 1)) && r;
     r = p && consumeToken(b, RBRACKET) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
 
-  // SKIP?
-  private static boolean listExpression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "listExpression_1")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // (listBracketsBody (SKIP? COMMA SKIP? listBracketsBody)* SKIP? (COMMA SKIP?)?)?
+  // (listBracketsBody (skip COMMA skip listBracketsBody)* skip (COMMA skip)?)?
   private static boolean listExpression_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "listExpression_2")) return false;
     listExpression_2_0(b, l + 1);
     return true;
   }
 
-  // listBracketsBody (SKIP? COMMA SKIP? listBracketsBody)* SKIP? (COMMA SKIP?)?
+  // listBracketsBody (skip COMMA skip listBracketsBody)* skip (COMMA skip)?
   private static boolean listExpression_2_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "listExpression_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = listBracketsBody(b, l + 1);
     r = r && listExpression_2_0_1(b, l + 1);
-    r = r && listExpression_2_0_2(b, l + 1);
+    r = r && skip(b, l + 1);
     r = r && listExpression_2_0_3(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // (SKIP? COMMA SKIP? listBracketsBody)*
+  // (skip COMMA skip listBracketsBody)*
   private static boolean listExpression_2_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "listExpression_2_0_1")) return false;
     while (true) {
@@ -757,63 +677,35 @@ public class ChasmParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // SKIP? COMMA SKIP? listBracketsBody
+  // skip COMMA skip listBracketsBody
   private static boolean listExpression_2_0_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "listExpression_2_0_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = listExpression_2_0_1_0_0(b, l + 1);
+    r = skip(b, l + 1);
     r = r && consumeToken(b, COMMA);
-    r = r && listExpression_2_0_1_0_2(b, l + 1);
+    r = r && skip(b, l + 1);
     r = r && listBracketsBody(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // SKIP?
-  private static boolean listExpression_2_0_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "listExpression_2_0_1_0_0")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean listExpression_2_0_1_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "listExpression_2_0_1_0_2")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean listExpression_2_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "listExpression_2_0_2")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // (COMMA SKIP?)?
+  // (COMMA skip)?
   private static boolean listExpression_2_0_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "listExpression_2_0_3")) return false;
     listExpression_2_0_3_0(b, l + 1);
     return true;
   }
 
-  // COMMA SKIP?
+  // COMMA skip
   private static boolean listExpression_2_0_3_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "listExpression_2_0_3_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, COMMA);
-    r = r && listExpression_2_0_3_0_1(b, l + 1);
+    r = r && skip(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
-  }
-
-  // SKIP?
-  private static boolean listExpression_2_0_3_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "listExpression_2_0_3_0_1")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   /* ********************************************************** */
@@ -886,16 +778,16 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (literalExpression | identifier) SKIP? COLON SKIP? expression
+  // (literalExpression | identifier) skip COLON skip expression
   public static boolean mapEntry(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "mapEntry")) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, MAP_ENTRY, "<map entry>");
     r = mapEntry_0(b, l + 1);
     p = r; // pin = 1
-    r = r && report_error_(b, mapEntry_1(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && report_error_(b, consumeToken(b, COLON)) && r;
-    r = p && report_error_(b, mapEntry_3(b, l + 1)) && r;
+    r = p && report_error_(b, skip(b, l + 1)) && r;
     r = p && expression(b, l + 1) && r;
     exit_section_(b, l, m, r, p, ChasmParser::mapEntryRecover);
     return r || p;
@@ -908,20 +800,6 @@ public class ChasmParser implements PsiParser, LightPsiParser {
     r = literalExpression(b, l + 1);
     if (!r) r = identifier(b, l + 1);
     return r;
-  }
-
-  // SKIP?
-  private static boolean mapEntry_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "mapEntry_1")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean mapEntry_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "mapEntry_3")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   /* ********************************************************** */
@@ -947,7 +825,7 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LBRACE SKIP? (mapEntry (SKIP? COMMA SKIP? mapEntry)* SKIP? (COMMA SKIP?)?)? RBRACE
+  // LBRACE skip (mapEntry (skip COMMA skip mapEntry)* skip (COMMA skip)?)? RBRACE
   public static boolean mapExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "mapExpression")) return false;
     if (!nextTokenIs(b, LBRACE)) return false;
@@ -955,41 +833,34 @@ public class ChasmParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, MAP_EXPRESSION, null);
     r = consumeToken(b, LBRACE);
     p = r; // pin = 1
-    r = r && report_error_(b, mapExpression_1(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && report_error_(b, mapExpression_2(b, l + 1)) && r;
     r = p && consumeToken(b, RBRACE) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
 
-  // SKIP?
-  private static boolean mapExpression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "mapExpression_1")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // (mapEntry (SKIP? COMMA SKIP? mapEntry)* SKIP? (COMMA SKIP?)?)?
+  // (mapEntry (skip COMMA skip mapEntry)* skip (COMMA skip)?)?
   private static boolean mapExpression_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "mapExpression_2")) return false;
     mapExpression_2_0(b, l + 1);
     return true;
   }
 
-  // mapEntry (SKIP? COMMA SKIP? mapEntry)* SKIP? (COMMA SKIP?)?
+  // mapEntry (skip COMMA skip mapEntry)* skip (COMMA skip)?
   private static boolean mapExpression_2_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "mapExpression_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = mapEntry(b, l + 1);
     r = r && mapExpression_2_0_1(b, l + 1);
-    r = r && mapExpression_2_0_2(b, l + 1);
+    r = r && skip(b, l + 1);
     r = r && mapExpression_2_0_3(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // (SKIP? COMMA SKIP? mapEntry)*
+  // (skip COMMA skip mapEntry)*
   private static boolean mapExpression_2_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "mapExpression_2_0_1")) return false;
     while (true) {
@@ -1000,115 +871,65 @@ public class ChasmParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // SKIP? COMMA SKIP? mapEntry
+  // skip COMMA skip mapEntry
   private static boolean mapExpression_2_0_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "mapExpression_2_0_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = mapExpression_2_0_1_0_0(b, l + 1);
+    r = skip(b, l + 1);
     r = r && consumeToken(b, COMMA);
-    r = r && mapExpression_2_0_1_0_2(b, l + 1);
+    r = r && skip(b, l + 1);
     r = r && mapEntry(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // SKIP?
-  private static boolean mapExpression_2_0_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "mapExpression_2_0_1_0_0")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean mapExpression_2_0_1_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "mapExpression_2_0_1_0_2")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean mapExpression_2_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "mapExpression_2_0_2")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // (COMMA SKIP?)?
+  // (COMMA skip)?
   private static boolean mapExpression_2_0_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "mapExpression_2_0_3")) return false;
     mapExpression_2_0_3_0(b, l + 1);
     return true;
   }
 
-  // COMMA SKIP?
+  // COMMA skip
   private static boolean mapExpression_2_0_3_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "mapExpression_2_0_3_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, COMMA);
-    r = r && mapExpression_2_0_3_0_1(b, l + 1);
+    r = r && skip(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // SKIP?
-  private static boolean mapExpression_2_0_3_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "mapExpression_2_0_3_0_1")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
   /* ********************************************************** */
-  // SKIP? DOT SKIP? identifier
+  // skip DOT skip identifier
   public static boolean memberExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "memberExpression")) return false;
-    if (!nextTokenIs(b, "<member expression>", DOT, SKIP)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _LEFT_, MEMBER_EXPRESSION, "<member expression>");
-    r = memberExpression_0(b, l + 1);
+    r = skip(b, l + 1);
     r = r && consumeToken(b, DOT);
     p = r; // pin = 2
-    r = r && report_error_(b, memberExpression_2(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && identifier(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
 
-  // SKIP?
-  private static boolean memberExpression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "memberExpression_0")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean memberExpression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "memberExpression_2")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
   /* ********************************************************** */
-  // SKIP? (MULTIPLY | DIVIDE | MODULO) SKIP? multiplicativePrecedence
+  // skip (MULTIPLY | DIVIDE | MODULO) skip multiplicativePrecedence
   public static boolean multiplicativeExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "multiplicativeExpression")) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _LEFT_, MULTIPLICATIVE_EXPRESSION, "<multiplicative expression>");
-    r = multiplicativeExpression_0(b, l + 1);
+    r = skip(b, l + 1);
     r = r && multiplicativeExpression_1(b, l + 1);
     p = r; // pin = 2
-    r = r && report_error_(b, multiplicativeExpression_2(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && multiplicativePrecedence(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
-  }
-
-  // SKIP?
-  private static boolean multiplicativeExpression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "multiplicativeExpression_0")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   // MULTIPLY | DIVIDE | MODULO
@@ -1119,13 +940,6 @@ public class ChasmParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, DIVIDE);
     if (!r) r = consumeToken(b, MODULO);
     return r;
-  }
-
-  // SKIP?
-  private static boolean multiplicativeExpression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "multiplicativeExpression_2")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   /* ********************************************************** */
@@ -1148,7 +962,7 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LPAREN SKIP? bracketsBody SKIP? RPAREN
+  // LPAREN skip bracketsBody skip RPAREN
   public static boolean parenthesesExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "parenthesesExpression")) return false;
     if (!nextTokenIs(b, LPAREN)) return false;
@@ -1156,26 +970,12 @@ public class ChasmParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, PARENTHESES_EXPRESSION, null);
     r = consumeToken(b, LPAREN);
     p = r; // pin = 1
-    r = r && report_error_(b, parenthesesExpression_1(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && report_error_(b, bracketsBody(b, l + 1)) && r;
-    r = p && report_error_(b, parenthesesExpression_3(b, l + 1)) && r;
+    r = p && report_error_(b, skip(b, l + 1)) && r;
     r = p && consumeToken(b, RPAREN) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
-  }
-
-  // SKIP?
-  private static boolean parenthesesExpression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "parenthesesExpression_1")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean parenthesesExpression_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "parenthesesExpression_3")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   /* ********************************************************** */
@@ -1211,25 +1011,18 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SKIP? (LESS_THAN | LESS_THAN_EQUAL | GREATER_THAN | GREATER_THAN_EQUAL) SKIP? relationalPrecedence
+  // skip (LESS_THAN | LESS_THAN_EQUAL | GREATER_THAN | GREATER_THAN_EQUAL) skip relationalPrecedence
   public static boolean relationalExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "relationalExpression")) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _LEFT_, RELATIONAL_EXPRESSION, "<relational expression>");
-    r = relationalExpression_0(b, l + 1);
+    r = skip(b, l + 1);
     r = r && relationalExpression_1(b, l + 1);
     p = r; // pin = 2
-    r = r && report_error_(b, relationalExpression_2(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && relationalPrecedence(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
-  }
-
-  // SKIP?
-  private static boolean relationalExpression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "relationalExpression_0")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   // LESS_THAN | LESS_THAN_EQUAL | GREATER_THAN | GREATER_THAN_EQUAL
@@ -1241,13 +1034,6 @@ public class ChasmParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, GREATER_THAN);
     if (!r) r = consumeToken(b, GREATER_THAN_EQUAL);
     return r;
-  }
-
-  // SKIP?
-  private static boolean relationalExpression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "relationalExpression_2")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   /* ********************************************************** */
@@ -1270,25 +1056,18 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SKIP? (SHIFT_LEFT | SHIFT_RIGHT | SHIFT_RIGHT_UNSIGNED) SKIP? shiftPrecedence
+  // skip (SHIFT_LEFT | SHIFT_RIGHT | SHIFT_RIGHT_UNSIGNED) skip shiftPrecedence
   public static boolean shiftExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "shiftExpression")) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _LEFT_, SHIFT_EXPRESSION, "<shift expression>");
-    r = shiftExpression_0(b, l + 1);
+    r = skip(b, l + 1);
     r = r && shiftExpression_1(b, l + 1);
     p = r; // pin = 2
-    r = r && report_error_(b, shiftExpression_2(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && shiftPrecedence(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
-  }
-
-  // SKIP?
-  private static boolean shiftExpression_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shiftExpression_0")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   // SHIFT_LEFT | SHIFT_RIGHT | SHIFT_RIGHT_UNSIGNED
@@ -1299,13 +1078,6 @@ public class ChasmParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, SHIFT_RIGHT);
     if (!r) r = consumeToken(b, SHIFT_RIGHT_UNSIGNED);
     return r;
-  }
-
-  // SKIP?
-  private static boolean shiftExpression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "shiftExpression_2")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   /* ********************************************************** */
@@ -1328,51 +1100,45 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // booleanOrPrecedence SKIP? TERNARY SKIP? ternaryPrecedence SKIP? COLON SKIP? ternaryPrecedence
+  // (SKIP | comment | docComment)*
+  static boolean skip(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "skip")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!skip_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "skip", c)) break;
+    }
+    return true;
+  }
+
+  // SKIP | comment | docComment
+  private static boolean skip_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "skip_0")) return false;
+    boolean r;
+    r = consumeToken(b, SKIP);
+    if (!r) r = comment(b, l + 1);
+    if (!r) r = docComment(b, l + 1);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // booleanOrPrecedence skip TERNARY skip ternaryPrecedence skip COLON skip ternaryPrecedence
   public static boolean ternaryExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ternaryExpression")) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _COLLAPSE_, TERNARY_EXPRESSION, "<ternary expression>");
     r = booleanOrPrecedence(b, l + 1);
-    r = r && ternaryExpression_1(b, l + 1);
+    r = r && skip(b, l + 1);
     r = r && consumeToken(b, TERNARY);
     p = r; // pin = 3
-    r = r && report_error_(b, ternaryExpression_3(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && report_error_(b, ternaryPrecedence(b, l + 1)) && r;
-    r = p && report_error_(b, ternaryExpression_5(b, l + 1)) && r;
+    r = p && report_error_(b, skip(b, l + 1)) && r;
     r = p && report_error_(b, consumeToken(b, COLON)) && r;
-    r = p && report_error_(b, ternaryExpression_7(b, l + 1)) && r;
+    r = p && report_error_(b, skip(b, l + 1)) && r;
     r = p && ternaryPrecedence(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
-  }
-
-  // SKIP?
-  private static boolean ternaryExpression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ternaryExpression_1")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean ternaryExpression_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ternaryExpression_3")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean ternaryExpression_5(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ternaryExpression_5")) return false;
-    consumeToken(b, SKIP);
-    return true;
-  }
-
-  // SKIP?
-  private static boolean ternaryExpression_7(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ternaryExpression_7")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   /* ********************************************************** */
@@ -1386,14 +1152,14 @@ public class ChasmParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (PLUS | MINUS | NOT | INVERT) SKIP? unaryPrecedence
+  // (PLUS | MINUS | NOT | INVERT) skip unaryPrecedence
   public static boolean unaryExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "unaryExpression")) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _COLLAPSE_, UNARY_EXPRESSION, "<unary expression>");
     r = unaryExpression_0(b, l + 1);
     p = r; // pin = 1
-    r = r && report_error_(b, unaryExpression_1(b, l + 1));
+    r = r && report_error_(b, skip(b, l + 1));
     r = p && unaryPrecedence(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
@@ -1408,13 +1174,6 @@ public class ChasmParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, NOT);
     if (!r) r = consumeToken(b, INVERT);
     return r;
-  }
-
-  // SKIP?
-  private static boolean unaryExpression_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "unaryExpression_1")) return false;
-    consumeToken(b, SKIP);
-    return true;
   }
 
   /* ********************************************************** */

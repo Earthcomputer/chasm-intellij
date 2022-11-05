@@ -9,6 +9,12 @@ import com.intellij.psi.PsiReference;
 public interface ChasmMemberExpression extends ChasmExpression {
 
   @NotNull
+  List<ChasmComment> getCommentList();
+
+  @NotNull
+  List<ChasmDocComment> getDocCommentList();
+
+  @NotNull
   ChasmExpression getExpression();
 
   @Nullable

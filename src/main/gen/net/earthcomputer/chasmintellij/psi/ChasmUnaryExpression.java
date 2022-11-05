@@ -9,6 +9,12 @@ import com.intellij.psi.tree.IElementType;
 public interface ChasmUnaryExpression extends ChasmExpression {
 
   @NotNull
+  List<ChasmComment> getCommentList();
+
+  @NotNull
+  List<ChasmDocComment> getDocCommentList();
+
+  @NotNull
   IElementType getOperator();
 
   @Nullable

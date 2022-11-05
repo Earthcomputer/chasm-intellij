@@ -17,6 +17,13 @@ import net.earthcomputer.chasmintellij.psi.ChasmTypes;
 
 SKIP=[ \n\r\t]+
 
+BEGIN_LINE_COMMENT="//"
+BEGIN_INLINE_COMMENT="/*"
+END_INLINE_COMMENT="*/"
+BEGIN_LINE_DOC_COMMENT="/**"
+BEGIN_INLINE_DOC_COMMENT="///"
+
+
 NULL="null"
 BOOL="true" | "false"
 FLOAT=("+" | "-")? [0-9]+ "." [0-9]+ ("e" ("+" | "-")? [0-9]+)?
@@ -65,10 +72,18 @@ BACKTICK=`
 %state WAITING_CLOSE_QUOTE
 %state WAITING_CLOSE_SINGLE_QUOTE
 %state WAITING_CLOSE_BACKTICK
+%state INSIDE_LINE_DOC_COMMENT
+%state INSIDE_INLINE_DOC_COMMENT
+%state INSIDE_LINE_COMMENT
+%state INSIDE_INLINE_COMMENT
 
 %%
 
 <YYINITIAL> {SKIP} { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+<YYINITIAL> {BEGIN_LINE_DOC_COMMENT} { yybegin(INSIDE_LINE_DOC_COMMENT); return ChasmTypes.DOC_COMMENT; }
+<YYINITIAL> {BEGIN_INLINE_DOC_COMMENT} { yybegin(INSIDE_INLINE_DOC_COMMENT); return ChasmTypes.DOC_COMMENT_INLINE_START; }
+<YYINITIAL> {BEGIN_LINE_COMMENT} { yybegin(INSIDE_LINE_COMMENT); return ChasmTypes.LINE_COMMENT; }
+<YYINITIAL> {BEGIN_INLINE_COMMENT} { yybegin(INSIDE_INLINE_COMMENT); return ChasmTypes.COMMENT_INLINE_START; }
 <YYINITIAL> {NULL} { yybegin(YYINITIAL); return ChasmTypes.NULL; }
 <YYINITIAL> {BOOL} { yybegin(YYINITIAL); return ChasmTypes.BOOL; }
 <YYINITIAL> {FLOAT} { yybegin(YYINITIAL); return ChasmTypes.FLOAT; }
@@ -123,5 +138,14 @@ BACKTICK=`
 <WAITING_CLOSE_BACKTICK> \\\\ { yybegin(WAITING_CLOSE_BACKTICK); return ChasmTypes.ESCAPED_STRING; }
 <WAITING_CLOSE_BACKTICK> ` { yybegin(YYINITIAL); return ChasmTypes.BACKTICK; }
 <WAITING_CLOSE_BACKTICK> [^] { yybegin(WAITING_CLOSE_BACKTICK); return ChasmTypes.IDENT; }
+
+<INSIDE_LINE_DOC_COMMENT> "\n" { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+<INSIDE_LINE_DOC_COMMENT> [^] { yybegin(INSIDE_LINE_DOC_COMMENT); return ChasmTypes.DOC_COMMENT; }
+<INSIDE_INLINE_DOC_COMMENT> "*/" { yybegin(YYINITIAL); return ChasmTypes.DOC_COMMENT_INLINE_END; }
+<INSIDE_INLINE_DOC_COMMENT> [^] { yybegin(INSIDE_INLINE_DOC_COMMENT); return ChasmTypes.DOC_COMMENT; }
+<INSIDE_LINE_COMMENT> "\n" { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+<INSIDE_LINE_COMMENT> [^] { yybegin(INSIDE_LINE_COMMENT); return ChasmTypes.LINE_COMMENT; }
+<INSIDE_INLINE_COMMENT> "*/" { yybegin(YYINITIAL); return ChasmTypes.COMMENT_INLINE_END; }
+<INSIDE_INLINE_COMMENT> [^] { yybegin(INSIDE_INLINE_COMMENT); return ChasmTypes.INLINE_COMMENT; }
 
 [^] { return TokenType.BAD_CHARACTER; }

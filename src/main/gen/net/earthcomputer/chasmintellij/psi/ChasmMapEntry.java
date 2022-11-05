@@ -9,6 +9,12 @@ import com.intellij.psi.PsiNameIdentifierOwner;
 public interface ChasmMapEntry extends PsiNameIdentifierOwner {
 
   @NotNull
+  List<ChasmComment> getCommentList();
+
+  @NotNull
+  List<ChasmDocComment> getDocCommentList();
+
+  @NotNull
   List<ChasmExpression> getExpressionList();
 
   @Nullable

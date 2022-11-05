@@ -29,6 +29,18 @@ public class ChasmMapEntryImpl extends ASTWrapperPsiElement implements ChasmMapE
 
   @Override
   @NotNull
+  public List<ChasmComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ChasmComment.class);
+  }
+
+  @Override
+  @NotNull
+  public List<ChasmDocComment> getDocCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ChasmDocComment.class);
+  }
+
+  @Override
+  @NotNull
   public List<ChasmExpression> getExpressionList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, ChasmExpression.class);
   }

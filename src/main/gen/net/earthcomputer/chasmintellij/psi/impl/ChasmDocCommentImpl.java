@@ -8,18 +8,18 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static net.earthcomputer.chasmintellij.psi.ChasmTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import net.earthcomputer.chasmintellij.psi.*;
 import com.intellij.psi.tree.IElementType;
 
-public class ChasmUnaryExpressionImpl extends ChasmExpressionImpl implements ChasmUnaryExpression {
+public class ChasmDocCommentImpl extends ASTWrapperPsiElement implements ChasmDocComment {
 
-  public ChasmUnaryExpressionImpl(@NotNull ASTNode node) {
+  public ChasmDocCommentImpl(@NotNull ASTNode node) {
     super(node);
   }
 
-  @Override
   public void accept(@NotNull ChasmVisitor visitor) {
-    visitor.visitUnaryExpression(this);
+    visitor.visitDocComment(this);
   }
 
   @Override
@@ -30,26 +30,14 @@ public class ChasmUnaryExpressionImpl extends ChasmExpressionImpl implements Cha
 
   @Override
   @NotNull
-  public List<ChasmComment> getCommentList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, ChasmComment.class);
-  }
-
-  @Override
-  @NotNull
-  public List<ChasmDocComment> getDocCommentList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, ChasmDocComment.class);
-  }
-
-  @Override
-  @NotNull
-  public IElementType getOperator() {
-    return ChasmPsiImplUtil.getOperator(this);
+  public IElementType getTokenType() {
+    return ChasmPsiImplUtil.getTokenType(this);
   }
 
   @Override
   @Nullable
-  public ChasmExpression getOperand() {
-    return findChildByClass(ChasmExpression.class);
+  public PsiElement getOwner() {
+    return ChasmPsiImplUtil.getOwner(this);
   }
 
 }

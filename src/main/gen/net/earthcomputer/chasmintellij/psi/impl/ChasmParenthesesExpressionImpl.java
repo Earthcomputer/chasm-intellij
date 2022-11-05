@@ -28,6 +28,18 @@ public class ChasmParenthesesExpressionImpl extends ChasmExpressionImpl implemen
   }
 
   @Override
+  @NotNull
+  public List<ChasmComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ChasmComment.class);
+  }
+
+  @Override
+  @NotNull
+  public List<ChasmDocComment> getDocCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ChasmDocComment.class);
+  }
+
+  @Override
   @Nullable
   public ChasmExpression getExpression() {
     return findChildByClass(ChasmExpression.class);
